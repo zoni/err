@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Err by gbin</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Err</h1>
+        <h2>err is a plugin based XMPP chatbot designed to be easily deployable, extensible and maintainable.</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/gbin/err/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/gbin/err/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/gbin/err" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>err - the pluggable jabber bot</h1>
+
+<p>err is a plugin based XMPP chatbot designed to be easily deployable, extensible and maintainable.
+It is written in python and it is based on jabberbot_ and yapsy_ with some minor modifications for the first one.</p>
+
+<h2>Brief History</h2>
+
+<p>At Mondial Telecom (<a href="http://www.mondialtelecom.eu">http://www.mondialtelecom.eu</a>), we needed a chat bot over XMPP so it can reach the non techie audience of the company.
+We started to write so much features that we decided to make a more modular bot framework.</p>
+
+<h2>Features</h2>
+
+<ul>
+<li>Tested with hipchat_ and openfire_ but should be compatible with any XMPP/Jabber servers.</li>
+<li>Can be setup so a restricted list of persons have the administration rights</li>
+<li>Dynamic plugin architecture : the bot admin can install/uninstall/enable/disable plugins dynamically just by chatting with the bot.</li>
+<li>Supports MUCs (chatrooms)</li>
+<li>Can proxy and route one 2 one messages to MUC so it can enabler simpler XMPP notifiers to be MUC compatible (for example the jira XMPP notifier).</li>
+<li>Really easily extensible (see example below)</li>
+<li>Provides an an automatic persistance store per plugin</li>
+<li>an !help command that generate dynamically the documentation from the python docstrings of the commands</li>
+</ul><p>.. _hipchat: <a href="http://www.hipchat.org/">http://www.hipchat.org/</a>
+.. _openfire: <a href="http://www.igniterealtime.org/projects/openfire/">http://www.igniterealtime.org/projects/openfire/</a>
+.. _jabberbot: <a href="http://thp.io/2007/python-jabberbot/">http://thp.io/2007/python-jabberbot/</a>
+.. _yapsy: <a href="http://yapsy.sourceforge.net/">http://yapsy.sourceforge.net/</a></p>
+
+<h2>Prerequisites</h2>
+
+<p>Create a user for the bot on your private XMPP server or a public server like jabber.org.
+Optionally you can create a MUC (also called conference room or chatroom) in which you can interact with the bot. </p>
+
+<h2>Installation from the sources</h2>
+
+<p><strong>Dependencies</strong></p>
+
+<p>Python 2.7+ but probably not 3.0
+And those python modules. The copy-paste for the lazy pip users but if you can have them from your standard distro it is better
+::
+    pip install -r requirements.txt</p>
+
+<p>Create a user for the bot in your XMPP server admin.</p>
+
+<p>From the installation directory copy
+::
+    cp errbot/config-template.py config.py</p>
+
+<p>Read the inline documentation of the file and edit the values so the bot can connect to your XMPP server</p>
+
+<p><strong>Starting the daemon</strong></p>
+
+<p>For a one shot try, I would recommend to use
+::
+    ./scripts/err.py</p>
+
+<p>so you can inspect the logs for an immediate feedback</p>
+
+<p>Then at deployment time, a nohup utility script can be used
+::
+    ./scripts/err.sh</p>
+
+<p>Note that config.py needs to be at the root of the working directory of the bot.</p>
+
+<p>More details on the bot admin features can be found on the wiki : <a href="https://github.com/gbin/err/wiki/admin">https://github.com/gbin/err/wiki/admin</a></p>
+
+<h2>Installation from pypi</h2>
+
+<p>Pip will take care of installing err and the basic dependencies for you
+::
+    pip install err</p>
+
+<p>Go to or create a working directory for it then copy there and adapt the configuration template
+::
+    cp /usr/lib64/python2.7/site-packages/errbot/config-template.py config.py</p>
+
+<p>Then you can start and try your bot
+::
+    err.py</p>
+
+<h2>Interact with the Bot</h2>
+
+<ul>
+<li>Invite the bot directly from your chat client.</li>
+<li>Send "!help" to it without the quotes</li>
+<li>it should answer by the list of available commands and a short explanation</li>
+<li>if you want to know more about a command you can do "!help command"</li>
+</ul><p>More documentation is available on the wiki : <a href="https://github.com/gbin/err/wiki">https://github.com/gbin/err/wiki</a></p>
+
+<h2>Install/uninstall a public known plugin</h2>
+
+<p>To get a list of public repo you can do
+::
+    !repos</p>
+
+<p>Then pick one that you fancy for example
+::
+    !install err-pollbot</p>
+
+<p>You should have instantly a new poll service you can use to vote for where to lunch with you collegues :)</p>
+
+<p>You can imply uninstall a plugin by its name:
+!uninstall err-pollbot</p>
+
+<p>Note: Please pay attention when you install a plugin, it may require more python external dependencies.</p>
+
+<h2>Tutorial to write a simple plugin</h2>
+
+<p>Try it ! It is super simple !</p>
+
+<p>You can find a tutorial here : <a href="https://github.com/gbin/err/wiki/plugin-dev">https://github.com/gbin/err/wiki/plugin-dev</a></p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
