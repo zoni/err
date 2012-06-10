@@ -1,0 +1,7 @@
+/.idea/
+/config.py
+/config.pyc
+/dist/
+/err.egg-info/
+/errbot/
+/nohup.out
