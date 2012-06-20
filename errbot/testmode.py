@@ -1,6 +1,46 @@
+from logging import Handler
 import logging
 import sys
 import config
+import curses
+
+screen = curses.initscr()
+curses.noecho()
+curses.curs_set(1)
+screen.keypad(1)
+screen_size_y, screen_size_x = screen.getmaxyx()
+
+mainpad = curses.newpad(120,1000)
+logpad = curses.newpad(120,1000)
+#mypad.border()
+
+mainpad_pos = 0
+logpad_pos = 0
+
+def refresh():
+    middle = screen_size_x/2
+    mainpad.refresh(mainpad_pos, 0, 0, 0, screen_size_y-1, middle)
+    logpad.refresh(logpad_pos, 0, 0, middle+1, screen_size_y-1, screen_size_x -1)
+
+class CursesHandler(Handler):
+    def emit(self, record):
+        try:
+            logpad.addstr("%s\n" % self.format(record))
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except:
+            self.handleError(record)
+
+#hack back the logging so it is redirected to curses
+logger = logging.getLogger('')
+hdlr = CursesHandler()
+hdlr.setFormatter(logging.Formatter('%(levelname)s %(message)s'))
+
+# zap them all to avoid noise on the console
+for h in logger.handlers:
+    logger.removeHandler(h)
+
+logger.addHandler(hdlr)
 
 class JIDMock():
     domain = 'meuh'
@@ -32,9 +72,12 @@ class MessageMock():
 class ConnectionMock():
     def send(self, mess):
         if hasattr(mess, 'getBody'):
-            print mess.getBody()
+            mainpad.addstr(mess.getBody())
 
 ENCODING_INPUT = sys.stdin.encoding
+
+def prompt():
+    mainpad.addstr('\nTalk to me >>')
 
 def patch_jabberbot():
     from errbot import jabberbot
@@ -45,15 +88,43 @@ def patch_jabberbot():
         self.jid = JIDMock('blah') # whatever
         self.connect() # be sure we are "connected" before the first command
         try:
+            buffer = ""
+            prompt()
+            mainpad_pos=mainpad.getyx()[0] - 40
+            refresh()
             while True:
-                entry = raw_input("Talk to  me >>").decode(ENCODING_INPUT)
-                self.callback_message(conn, MessageMock(entry))
+                event = screen.getch()
+                if event == ord('\n'):
+                    mainpad.addstr('\n')
+                    self.callback_message(conn, MessageMock(buffer))
+                    buffer = ""
+                    prompt()
+                elif event == curses.KEY_PPAGE:
+                    mainpad_pos -= 5
+                elif event == curses.KEY_NPAGE:
+                    mainpad_pos += 5
+                elif event == curses.KEY_BACKSPACE or event == 127:
+                    if buffer:
+                        buffer = buffer[:-1]
+                        (y,x) = mainpad.getyx()
+                        mainpad.move(y,x-1)
+                        mainpad.delch()
+                elif event == curses.KEY_RESIZE:
+                    screen_size_x, screen_size_y = screen.getmaxyx()
+
+                else:
+                    c = str(chr(event))
+                    mainpad.addstr(c)
+                    buffer+=c
+                refresh()
+
         except EOFError as eof:
-            pass
+                pass
         except KeyboardInterrupt as ki:
             pass
         finally:
-            print "\nExiting..."
+            curses.endwin()
+            mainpad.addstr("\nExiting...")
 
     def fake_connect(self):
         if not self.conn:
