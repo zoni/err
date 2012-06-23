@@ -35,6 +35,19 @@ class ConnectionMock():
             print mess.getBody()
 
 ENCODING_INPUT = sys.stdin.encoding
+import sys, tty, termios
+fd = sys.stdin.fileno()
+old_settings = termios.tcgetattr(fd)
+
+def setup_getch():
+    tty.setraw(sys.stdin.fileno())
+
+def getch():
+    return sys.stdin.read(1)
+
+def restore_getch():
+    termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+
 
 def patch_jabberbot():
     from errbot import jabberbot
@@ -45,15 +58,29 @@ def patch_jabberbot():
         self.jid = JIDMock('blah') # whatever
         self.connect() # be sure we are "connected" before the first command
         try:
+
             while True:
-                entry = raw_input("Talk to  me >>").decode(ENCODING_INPUT)
-                self.callback_message(conn, MessageMock(entry))
+                buffer = ''
+                c = None
+                sys.stdout.write('>>')
+                setup_getch()
+                while c != '\r':
+                    c = getch()
+                    buffer+=c
+                    sys.stdout.write(c)
+                    if ord(c) == 3: # ctrl c
+                        raise EOFError()
+                restore_getch()
+                sys.stdout.write('\n')
+                self.callback_message(conn, MessageMock(buffer))
         except EOFError as eof:
             pass
         except KeyboardInterrupt as ki:
             pass
         finally:
+            restore_getch()
             print "\nExiting..."
+
 
     def fake_connect(self):
         if not self.conn:
