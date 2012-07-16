@@ -7,12 +7,38 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="249.99513"
    height="250"
    viewBox="0 0 249.99513 249.99999"
    id="svg2"
-   xml:space="preserve"><metadata
+   xml:space="preserve"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="err.svg"
+   inkscape:export-filename="/home/gbin/projects/err/images/err.png"
+   inkscape:export-xdpi="36"
+   inkscape:export-ydpi="36"><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="640"
+   inkscape:window-height="480"
+   id="namedview30"
+   showgrid="false"
+   inkscape:zoom="0.944"
+   inkscape:cx="124.99757"
+   inkscape:cy="125"
+   inkscape:window-x="459"
+   inkscape:window-y="262"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="svg2" /><metadata
    id="metadata53"><rdf:RDF><cc:Work
        rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
          rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
@@ -127,7 +153,8 @@
    ry="11.029"
    transform="matrix(0.9914,-0.1308,0.1308,0.9914,-33.1576,39.7013)"
    id="ellipse45"
-   style="fill:#273069;stroke:#000000;stroke-miterlimit:10" />
+   style="fill:#273069;stroke:#000000;stroke-miterlimit:10"
+   d="m 296.26399,272.22501 c 0,6.09114 -4.77354,11.029 -10.662,11.029 -5.88846,0 -10.662,-4.93786 -10.662,-11.029 0,-6.09115 4.77354,-11.029 10.662,-11.029 5.88846,0 10.662,4.93785 10.662,11.029 z" />
 	
 		<ellipse
    cx="448.94901"
@@ -136,6 +163,7 @@
    ry="11.029"
    transform="matrix(0.9914,-0.1309,0.1309,0.9914,-28.9422,60.9065)"
    id="ellipse47"
-   style="fill:#273069;stroke:#000000;stroke-miterlimit:10" />
+   style="fill:#273069;stroke:#000000;stroke-miterlimit:10"
+   d="m 459.611,250.666 c 0,6.09115 -4.77354,11.029 -10.66199,11.029 -5.88846,0 -10.662,-4.93785 -10.662,-11.029 0,-6.09115 4.77354,-11.029 10.662,-11.029 5.88845,0 10.66199,4.93785 10.66199,11.029 z" />
 </g></g>
 </svg>

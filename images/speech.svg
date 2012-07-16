@@ -15,7 +15,10 @@
    sodipodi:docname="speech.svg"
    sodipodi:version="0.32"
    width="155.125"
-   version="1.1">
+   version="1.1"
+   inkscape:export-filename="/home/gbin/projects/err/images/speech.png"
+   inkscape:export-xdpi="25.5278"
+   inkscape:export-ydpi="25.5278">
   <metadata
      id="metadata3">
     <rdf:RDF>
@@ -72,13 +75,13 @@
      borderopacity="1.0"
      id="base"
      inkscape:cx="147.3356"
-     inkscape:cy="-137.42444"
+     inkscape:cy="-168.36944"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-height="721"
      inkscape:window-width="1024"
-     inkscape:window-x="357"
-     inkscape:window-y="304"
+     inkscape:window-x="660"
+     inkscape:window-y="357"
      inkscape:zoom="0.30699631"
      pagecolor="#000000"
      showborder="false"
