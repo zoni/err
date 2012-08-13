@@ -38,15 +38,15 @@
     <div class="container">
       <section id="main_content">
 
-        <p>err is a plugin based XMPP chatbot designed to be easily deployable, extensible and maintainable.</p>
+        <p>err is a plugin based chatbot designed to be easily deployable, extensible and maintainable.</p>
         <p>It allows you to start scripts interactively from your chatrooms for any reason: random humour, starting a build, monitoring commits, triggering alerts ...</p>
         <p>You can look at <a href="http://github.com/gbin/err/wiki/Catalog">the already not up to date catalog</a> to get an idea of the current contributions.</p>
         <p>It is really easy to add your own feature.</p>
         <p>It is open source under the GPL3 license.</p>
 
 <h2>Requirements</h2>
-It is written in Python 2.x and runs under Linux / Windows and MacOS.
-Note: Only linux is really tested daily.
+<p>It is written in Python 2.x and runs under Linux / Windows and MacOS.
+Note: Only linux is really tested daily.</p>
 
 <h2>A Screenshot everybody loves them...</h2>
 
@@ -54,20 +54,48 @@ Note: Only linux is really tested daily.
 
 <h2>More details about its features</h2>
 
+<h3>Backends :</h3>
 <ul>
-<li>Tested with <a href="http://www.hipchat.org/">hipchat</a> and <a href="http://www.igniterealtime.org/projects/openfire/">openfire</a> but should be compatible with any XMPP/Jabber servers.</li>
-<li>Can be setup so a restricted list of persons have the administration rights</li>
-<li>Dynamic plugin architecture : the bot admin can install/uninstall/enable/disable plugins dynamically just by chatting with the bot.</li>
-<li>Supports MUCs (chatrooms)</li>
-<li>Can proxy and route one 2 one messages to MUC so it can enabler simpler XMPP notifiers to be MUC compatible (for example the jira XMPP notifier).</li>
-<li>Really easily extensible (see example below)</li>
-<li>Provides an an automatic persistance store per plugin</li>
-<li>an !help command that generate dynamically the documentation from the python docstrings of the commands</li>
+    <li>XMPP : Tested with hipchat, openfire and Jabber but should be compatible with any standard XMPP servers.</li>
+    <li>CampFire support</li>
+    <li>Supports MUCs (chatrooms)</li>
+    <li>Local Graphical Console (for testing/dev)</li>
+    <li>Local Text Console (for testing/dev)</li>
 </ul>
-<p>More details on the bot admin features can be found on the wiki : <a href="https://github.com/gbin/err/wiki/admin">https://github.com/gbin/err/wiki/admin</a></p>
+
+<h3>Included :</h3>
+<ul>
+    <li>an !help command that generates dynamically the documentation from the python docstrings of the commands</li>
+    <li>A command history system where the users can recall a previous command</li>
+    <li>Can proxy and route one 2 one messages to MUC so it can enable simpler XMPP notifiers to be MUC compatible (for example the jira XMPP notifier).</li>
+</ul>
+
+<h3>Administration and Security :</h3>
+<ul>
+    <li>Can be setup so a restricted list of persons have the administration rights</li>
+    <li>Dynamic plugin architecture : the bot admin can install/uninstall/update/enable/disable plugins dynamically just by chatting with the bot.</li>
+    <li>Plugins can be hosted publicly or privately on git</li>
+    <li>Plugins can be configured directly from the chat (no need to change setup files for every plugin)</li>
+    <li>Configs can be exported and reimported (!export)</li>
+    <li>Technical logs can be inspected from the chat</li>
+</ul>
+
+<h3>Provides for Extensibility :</h3>
+<ul>
+    <li>a really easy learning curve for you to write your first plugin (see example below)</li>
+    <li>test consoles for superfast developement roundtrips</li>
+    <li>a support for subcommands</li>
+    <li>an automatic persistance store per plugin</li>
+    <li>a really simple webhooks integration</li>
+    <li>a polling framework for the plugins</li>
+    <li>an easy configuration framework</li>
+    <li>a templating framework to display fancy HTML messages</li>
+</ul>
+
+<p>More details about its features can be found on the <a href="https://github.com/gbin/err/wiki/">wiki</a></p>
 
 
-<h2> Convinced, you want to try it for real ?</h2>
+<h2> Convinced ? you want to try it for real ?</h2>
 <p>You can try to join the public MUC <a href='xmpp:err@conference.jabber.org?join'>err@conference.jabber.org</a> to see if our demo bot is online </p>
 
 <p>Or Head to the <a href="https://github.com/gbin/err">main github page</a> and follow the installation instructions if you want to try a private instance.</p>
