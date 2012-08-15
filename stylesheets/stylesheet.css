@@ -271,3 +271,7 @@ p {
 margin-top:0px;
 }
 
+.err {
+  font-weight: bold;
+  color: #F07E2A;
+}
