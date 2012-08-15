@@ -1,19 +1,42 @@
 body {
   margin: 0;
   padding: 0;
-  background: #151515 url("../images/bkg.png") 0 0;
-  color: #eaeaea;
-  font: 16px;
-  line-height: 1.5;
+  background: #FFFFFF;
+  color: #000000; 
+  font-size: 13px;
+  line-height: 1.3;
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
 }
 
 /* General & 'Reset' Stuff */
 
+.header-container {
+  width: 920px;
+  margin: 0 0 0 50px; /* orig: 0 auto */
+}
+
+.main-container {
+  width: 100%;
+  /*overflow: hidden;*/
+
+  /*border-top: 1px solid #000;*/
+}
+
 .container {
-  width: 90%;
-  max-width: 600px;
-  margin: 0 auto;
+  width: 700px;
+  margin: 0 0 0 100px; /* orig: 0 auto */
+  float: left;
+}
+
+.side-container {
+  width: 400px;
+  margin-left: 850px;
+  margin-top: 30px;
+}
+
+.google-plus-activity {
+  width: 300px;
+  padding-left:10px;
 }
 
 section {
@@ -22,7 +45,9 @@ section {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  margin: 0 0 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  line-height: 1;
 }
 
 li {
@@ -36,9 +61,9 @@ li {
 */
 
 header {
-  background: rgba(0, 0, 0, 0.1);
+  background: FFFFFF;
   width: 100%;
-  border-bottom: 1px dashed #b5e853;
+  height: 100px;
   padding: 20px 0;
   margin: 0 0 40px 0;
 }
@@ -46,13 +71,13 @@ header {
 header h1 {
   font-size: 30px;
   line-height: 1.5;
-  margin: 0 0 0 -40px;
+  margin: 10px 0 0 0;
   font-weight: bold;
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
-  color: #b5e853;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1),
+  /*color: #b5e853;*/
+  /*text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1),
                0 0 5px rgba(181, 232, 83, 0.1),
-               0 0 10px rgba(181, 232, 83, 0.1);
+               0 0 10px rgba(181, 232, 83, 0.1);*/
   letter-spacing: -1px;
   -webkit-font-smoothing: antialiased;
 }
@@ -83,37 +108,38 @@ section img {
 h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
-  color: #b5e853;
   letter-spacing: -0.03em;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1),
-               0 0 5px rgba(181, 232, 83, 0.1),
-               0 0 10px rgba(181, 232, 83, 0.1);
 }
 
 #main_content h1 {
-  font-size: 30px;
+  font-size: 26px;
 }
 
 #main_content h2 {
-  font-size: 24px;
+  font-size: 22px;
+  margin-left: -30px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #000;
 }
 
 #main_content h3 {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 #main_content h4 {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 #main_content h5 {
-  font-size: 12px;
+  font-size: 10px;
   text-transform: uppercase;
   margin: 0 0 5px 0;
 }
 
 #main_content h6 {
-  font-size: 12px;
+  font-size: 10px;
   text-transform: uppercase;
   color: #999;
   margin: 0 0 5px 0;
@@ -124,17 +150,17 @@ dt {
   font-weight: bold;
 }
 
-ul li {
+#main_content ul li {
   list-style: none;
+  margin-left: 15px;
 }
 
-ul li:before {
-  content: ">>";
+#main_content ul li:before {
+  content: "⚫";
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
-  font-size: 13px;
-  color: #b5e853;
+  font-size: 12px;
   margin-left: -37px;
-  margin-right: 21px;
+  margin-right: 5px;
   line-height: 16px;
 }
 
@@ -223,7 +249,7 @@ hr {
 
 a {
   color: #63c0f5;
-  text-shadow: 0 0 5px rgba(104, 182, 255, 0.5);
+  /* text-shadow: 0 0 5px rgba(104, 182, 255, 0.5);*/
 }
 
 /* Clearfix */
@@ -240,3 +266,8 @@ a {
 .cf {
   zoom:1;
 }
+
+p {
+margin-top:0px;
+}
+

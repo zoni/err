@@ -81,7 +81,7 @@
      inkscape:window-height="721"
      inkscape:window-width="1024"
      inkscape:window-x="660"
-     inkscape:window-y="357"
+     inkscape:window-y="287"
      inkscape:zoom="0.30699631"
      pagecolor="#000000"
      showborder="false"
@@ -96,6 +96,9 @@
      d="m 155.12228,346.36501 c -22.16,0 -40,-17.84 -40,-40 l 0,-148.61575 -103.64882,17.12086 103.64882,-98.04449 0,-33.07757 c 0,-22.16 17.84,-40 40,-40"
      id="path576"
      sodipodi:nodetypes="ccccccc"
-     style="font-size:12px;fill:#ffffff;fill-opacity:0;stroke:#b5e853;stroke-width:7.5;stroke-opacity:1"
-     inkscape:connector-curvature="0" />
+     style="font-size:12px;fill:#999999;fill-opacity:0;stroke:#999999;stroke-width:7.50000000000000000;stroke-opacity:1"
+     inkscape:connector-curvature="0"
+     inkscape:export-filename="/home/gbin/projects/err/images/speech.png"
+     inkscape:export-xdpi="200"
+     inkscape:export-ydpi="200" />
 </svg>
