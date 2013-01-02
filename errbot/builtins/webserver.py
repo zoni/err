@@ -65,7 +65,8 @@ class Webserver(BotPlugin):
         # Doing a loop on one item seems silly, but this used to be a bigger dictionary.
         # Keeping the code makes it easy to add new items again in the future.
         for k,v in dict(SSL=ssl).items():
-            if k not in configuration: configuration[k] = v
+            if k not in configuration or configuration[k] is None:
+                configuration[k] = v
         super(Webserver, self).check_configuration(configuration)
 
     def activate(self):
