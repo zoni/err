@@ -8,3 +8,4 @@ requests
 jinja2
 rocket
 dnspython3
+webtest
