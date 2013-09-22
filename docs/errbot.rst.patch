@@ -1,0 +1,17 @@
+--- errbot.rst	2013-09-22 14:08:54.760897015 +0200
++++ errbot.rst  2013-09-22 14:08:49.240897249 +0200
+@@ -17,14 +17,6 @@
+     :undoc-members:
+     :show-inheritance:
+ 
+-:mod:`config-template` Module
+------------------------------
+-
+-.. automodule:: errbot.config-template
+-    :members:
+-    :undoc-members:
+-    :show-inheritance:
+-
+ :mod:`errBot` Module
+ --------------------
+ 
