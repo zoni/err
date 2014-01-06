@@ -7,7 +7,8 @@ SPHINXBUILD   = sphinx-build
 SPHINXAPIDOC  = sphinx-apidoc
 PAPER         =
 BUILDDIR      = _build
-GITURL        = git@github.com:zoni/err.git
+PAGESURL        = git@github.com:gbin/err.git
+PAGESDIR        = _repo
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
@@ -54,12 +55,14 @@ clean:
 gh-pages:
 	$(SPHINXAPIDOC) -f -o . ../errbot
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
-	test -e repo && (cd repo && git pull) || git clone $(GITURL) repo
-	cd repo && git checkout gh-pages
-	rm -r repo/*
-	cp -r $(BUILDDIR)/dirhtml/* repo/
-	touch repo/.nojekyll
-	cd repo && git add --all . && git commit --message "Sphinx autobuild" && git push
+	test -e $(PAGESDIR) && (cd $(PAGESDIR) && git pull) || git clone $(PAGESURL) $(PAGESDIR)
+	cd $(PAGESDIR) && git checkout gh-pages
+	rm -r $(PAGESDIR)/*
+	cp -r $(BUILDDIR)/dirhtml/* $(PAGESDIR)/
+	touch $(PAGESDIR)/.nojekyll
+	cd $(PAGESDIR) && git add --all . && git commit --message "Sphinx autobuild"
+	@echo
+	@echo "GitHub pages are built and ready, just waiting to be pushed from the $(PAGESDIR) directory"
 
 apidoc:
 	$(SPHINXAPIDOC) -f -o . ../errbot
