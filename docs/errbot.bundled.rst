@@ -1,30 +1,35 @@
-errbot.bundled package
-======================
+bundled Package
+===============
 
-Submodules
-----------
+:mod:`bundled` Package
+----------------------
 
-errbot.bundled.exrex module
----------------------------
+.. automodule:: errbot.bundled
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`exrex` Module
+-------------------
 
 .. automodule:: errbot.bundled.exrex
     :members:
     :undoc-members:
     :show-inheritance:
 
-errbot.bundled.threadpool module
---------------------------------
+:mod:`rocket` Module
+--------------------
+
+.. automodule:: errbot.bundled.rocket
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`threadpool` Module
+------------------------
 
 .. automodule:: errbot.bundled.threadpool
     :members:
     :undoc-members:
     :show-inheritance:
 
-
-Module contents
----------------
-
-.. automodule:: errbot.bundled
-    :members:
-    :undoc-members:
-    :show-inheritance:

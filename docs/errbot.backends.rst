@@ -1,86 +1,75 @@
-errbot.backends package
-=======================
+backends Package
+================
 
-Submodules
-----------
-
-errbot.backends.base module
----------------------------
+:mod:`base` Module
+------------------
 
 .. automodule:: errbot.backends.base
     :members:
     :undoc-members:
     :show-inheritance:
 
-errbot.backends.campfire module
--------------------------------
+:mod:`campfire` Module
+----------------------
 
 .. automodule:: errbot.backends.campfire
     :members:
     :undoc-members:
     :show-inheritance:
 
-errbot.backends.graphic module
-------------------------------
+:mod:`graphic` Module
+---------------------
 
 .. automodule:: errbot.backends.graphic
     :members:
     :undoc-members:
     :show-inheritance:
 
-errbot.backends.hipchat module
-------------------------------
+:mod:`hipchat` Module
+---------------------
 
 .. automodule:: errbot.backends.hipchat
     :members:
     :undoc-members:
     :show-inheritance:
 
-errbot.backends.irc module
---------------------------
+:mod:`irc` Module
+-----------------
 
 .. automodule:: errbot.backends.irc
     :members:
     :undoc-members:
     :show-inheritance:
 
-errbot.backends.null module
----------------------------
+:mod:`null` Module
+------------------
 
 .. automodule:: errbot.backends.null
     :members:
     :undoc-members:
     :show-inheritance:
 
-errbot.backends.test module
----------------------------
+:mod:`test` Module
+------------------
 
 .. automodule:: errbot.backends.test
     :members:
     :undoc-members:
     :show-inheritance:
 
-errbot.backends.text module
----------------------------
+:mod:`text` Module
+------------------
 
 .. automodule:: errbot.backends.text
     :members:
     :undoc-members:
     :show-inheritance:
 
-errbot.backends.xmpp module
----------------------------
+:mod:`xmpp` Module
+------------------
 
 .. automodule:: errbot.backends.xmpp
     :members:
     :undoc-members:
     :show-inheritance:
 
-
-Module contents
----------------
-
-.. automodule:: errbot.backends
-    :members:
-    :undoc-members:
-    :show-inheritance:
