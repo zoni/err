@@ -1,0 +1,1104 @@
+
+<!doctype html>
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>API reference &mdash; Err 2.0.0-rc2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/err.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.0-rc2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Err 2.0.0-rc2 documentation" href="../" />
+  <link rel="icon" type="image/png" href="../_static/err.png" />
+  <link rel="apple-touch-icon" href="../_static/err.png" />
+  <link rel="stylesheet" href="../_static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="../_static/fancybox/jquery.fancybox.pack.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32534172-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../">Err 2.0.0-rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="api-reference">
+<h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="errbot-package">
+<h1>errbot Package<a class="headerlink" href="#errbot-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">errbot</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-errbot.__init__"></span><dl class="class">
+<dt id="errbot.__init__.BotPlugin">
+<em class="property">class </em><tt class="descclassname">errbot.__init__.</tt><tt class="descname">BotPlugin</tt><a class="headerlink" href="#errbot.__init__.BotPlugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#errbot.botplugin.BotPluginBase" title="errbot.botplugin.BotPluginBase"><tt class="xref py py-class docutils literal"><span class="pre">errbot.botplugin.BotPluginBase</span></tt></a></p>
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.activate">
+<tt class="descname">activate</tt><big>(</big><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.activate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override if you want to do something at initialization phase (don&#8217;t forget to super(Gnagna, self).activate())</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.bare_send">
+<tt class="descname">bare_send</tt><big>(</big><em>xmppy_msg</em><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.bare_send" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>A bypass to send directly a crafted xmppy message.</dt>
+<dd>Usefull to extend to bot in not forseen ways.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.callback_botmessage">
+<tt class="descname">callback_botmessage</tt><big>(</big><em>mess</em><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.callback_botmessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override to get a notified on messages from the bot itself (emitted from your plugin sisters and brothers for example).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.callback_connect">
+<tt class="descname">callback_connect</tt><big>(</big><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.callback_connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override to get a notified when the bot is connected</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.callback_message">
+<tt class="descname">callback_message</tt><big>(</big><em>conn</em>, <em>mess</em><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.callback_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override to get a notified on <em>ANY</em> message.
+If you are interested only by chatting message you can filter for example mess.getType() in (&#8216;groupchat&#8217;, &#8216;chat&#8217;)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.check_configuration">
+<tt class="descname">check_configuration</tt><big>(</big><em>configuration</em><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.check_configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, this method will do only a BASIC check. You need to override it if you want to do more complex checks.
+It will be called before the configure callback. Note if the config_template is None, it will never be called
+It means recusively:
+1. in case of a dictionary, it will check if all the entries and from the same type are there and not more
+2. in case of an array or tuple, it will assume array members of the same type of first element of the template (no mix typed is supported)</p>
+<p>In case of validation error it should raise a errbot.utils.ValidationException</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.configure">
+<tt class="descname">configure</tt><big>(</big><em>configuration</em><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, it will just store the current configuation in the self.config field of your plugin
+If this plugin has no configuration yet, the framework will call this function anyway with None
+This method will be called before activation so don&#8217;t expect to be activated at that point</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.deactivate">
+<tt class="descname">deactivate</tt><big>(</big><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.deactivate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override if you want to do something at tear down phase (don&#8217;t forget to super(Gnagna, self).deactivate())</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.get_configuration_template">
+<tt class="descname">get_configuration_template</tt><big>(</big><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.get_configuration_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>If your plugin needs a configuration, override this method and return a configuration template.
+for example a dictionary like:
+return {&#8216;LOGIN&#8217; : <a class="reference external" href="mailto:'example&#37;&#52;&#48;example&#46;com">'example<span>&#64;</span>example<span>&#46;</span>com</a>&#8216;, &#8216;PASSWORD&#8217; : &#8216;password&#8217;}
+Note : if this method returns None, the plugin won&#8217;t be configured</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.get_installed_plugin_repos">
+<tt class="descname">get_installed_plugin_repos</tt><big>(</big><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.get_installed_plugin_repos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current installed plugin repos in a dictionary of name / url</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.invite_in_room">
+<tt class="descname">invite_in_room</tt><big>(</big><em>room</em>, <em>jids_to_invite</em><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.invite_in_room" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the bot invite a list of jids to a room</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.join_room">
+<tt class="descname">join_room</tt><big>(</big><em>room</em>, <em>username=None</em>, <em>password=None</em><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.join_room" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the bot join a room</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="errbot.__init__.BotPlugin.max_err_version">
+<tt class="descname">max_err_version</tt><a class="headerlink" href="#errbot.__init__.BotPlugin.max_err_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>If your plugin has a maximal version of err it needs to be on in order to run, please override accordingly this method.
+returning a string with the dotted maximal version. it MUST be in a 3 dotted numbers format or None
+for example: &#8220;1.2.2&#8221;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="errbot.__init__.BotPlugin.min_err_version">
+<tt class="descname">min_err_version</tt><a class="headerlink" href="#errbot.__init__.BotPlugin.min_err_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>If your plugin has a minimum version of err it needs to be on in order to run, please override accordingly this method.
+returning a string with the dotted minimum version. it MUST be in a 3 dotted numbers format or None
+for example: &#8220;1.2.2&#8221;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.send">
+<tt class="descname">send</tt><big>(</big><em>user</em>, <em>text</em>, <em>in_reply_to=None</em>, <em>message_type='chat'</em><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.send" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Sends asynchronously a message a room or a user.</dt>
+<dd>if it is a room message_type needs to by &#8216;groupchat&#8217; and user the room.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.start_poller">
+<tt class="descname">start_poller</tt><big>(</big><em>interval</em>, <em>method</em>, <em>args=None</em>, <em>kwargs=None</em><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.start_poller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start to poll a method at specific interval in seconds.
+Note : it will call the method with the initial interval delay for the first time
+Also, you can program
+for example : self.program_poller(self,30, fetch_stuff)
+where you have def fetch_stuff(self) in your plugin</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.stop_poller">
+<tt class="descname">stop_poller</tt><big>(</big><em>method=None</em>, <em>args=None</em>, <em>kwargs=None</em><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.stop_poller" title="Permalink to this definition">¶</a></dt>
+<dd><p>stop poller(s).
+if the method equals None -&gt; it stops all the pollers
+you need to regive the same parameters as the original start_poller to match a specific poller to stop</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.__init__.BotPlugin.warn_admins">
+<tt class="descname">warn_admins</tt><big>(</big><em>warning</em><big>)</big><a class="headerlink" href="#errbot.__init__.BotPlugin.warn_admins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a warning to the administrators of the bot</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="errbot.__init__.webhook">
+<tt class="descclassname">errbot.__init__.</tt><tt class="descname">webhook</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#errbot.__init__.webhook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple shortcut for the plugins to be notified on webhooks</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-errbot.botplugin">
+<span id="botplugin-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">botplugin</span></tt> Module<a class="headerlink" href="#module-errbot.botplugin" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="errbot.botplugin.BotPlugin">
+<em class="property">class </em><tt class="descclassname">errbot.botplugin.</tt><tt class="descname">BotPlugin</tt><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#errbot.botplugin.BotPluginBase" title="errbot.botplugin.BotPluginBase"><tt class="xref py py-class docutils literal"><span class="pre">errbot.botplugin.BotPluginBase</span></tt></a></p>
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.activate">
+<tt class="descname">activate</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.activate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.activate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override if you want to do something at initialization phase (don&#8217;t forget to super(Gnagna, self).activate())</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.bare_send">
+<tt class="descname">bare_send</tt><big>(</big><em>xmppy_msg</em><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.bare_send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.bare_send" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>A bypass to send directly a crafted xmppy message.</dt>
+<dd>Usefull to extend to bot in not forseen ways.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.callback_botmessage">
+<tt class="descname">callback_botmessage</tt><big>(</big><em>mess</em><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.callback_botmessage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.callback_botmessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override to get a notified on messages from the bot itself (emitted from your plugin sisters and brothers for example).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.callback_connect">
+<tt class="descname">callback_connect</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.callback_connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.callback_connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override to get a notified when the bot is connected</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.callback_message">
+<tt class="descname">callback_message</tt><big>(</big><em>conn</em>, <em>mess</em><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.callback_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.callback_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override to get a notified on <em>ANY</em> message.
+If you are interested only by chatting message you can filter for example mess.getType() in (&#8216;groupchat&#8217;, &#8216;chat&#8217;)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.check_configuration">
+<tt class="descname">check_configuration</tt><big>(</big><em>configuration</em><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.check_configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.check_configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, this method will do only a BASIC check. You need to override it if you want to do more complex checks.
+It will be called before the configure callback. Note if the config_template is None, it will never be called
+It means recusively:
+1. in case of a dictionary, it will check if all the entries and from the same type are there and not more
+2. in case of an array or tuple, it will assume array members of the same type of first element of the template (no mix typed is supported)</p>
+<p>In case of validation error it should raise a errbot.utils.ValidationException</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.configure">
+<tt class="descname">configure</tt><big>(</big><em>configuration</em><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.configure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, it will just store the current configuation in the self.config field of your plugin
+If this plugin has no configuration yet, the framework will call this function anyway with None
+This method will be called before activation so don&#8217;t expect to be activated at that point</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.deactivate">
+<tt class="descname">deactivate</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.deactivate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.deactivate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override if you want to do something at tear down phase (don&#8217;t forget to super(Gnagna, self).deactivate())</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.get_configuration_template">
+<tt class="descname">get_configuration_template</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.get_configuration_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.get_configuration_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>If your plugin needs a configuration, override this method and return a configuration template.
+for example a dictionary like:
+return {&#8216;LOGIN&#8217; : <a class="reference external" href="mailto:'example&#37;&#52;&#48;example&#46;com">'example<span>&#64;</span>example<span>&#46;</span>com</a>&#8216;, &#8216;PASSWORD&#8217; : &#8216;password&#8217;}
+Note : if this method returns None, the plugin won&#8217;t be configured</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.get_installed_plugin_repos">
+<tt class="descname">get_installed_plugin_repos</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.get_installed_plugin_repos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.get_installed_plugin_repos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current installed plugin repos in a dictionary of name / url</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.invite_in_room">
+<tt class="descname">invite_in_room</tt><big>(</big><em>room</em>, <em>jids_to_invite</em><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.invite_in_room"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.invite_in_room" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the bot invite a list of jids to a room</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.join_room">
+<tt class="descname">join_room</tt><big>(</big><em>room</em>, <em>username=None</em>, <em>password=None</em><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.join_room"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.join_room" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the bot join a room</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="errbot.botplugin.BotPlugin.max_err_version">
+<tt class="descname">max_err_version</tt><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.max_err_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.max_err_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>If your plugin has a maximal version of err it needs to be on in order to run, please override accordingly this method.
+returning a string with the dotted maximal version. it MUST be in a 3 dotted numbers format or None
+for example: &#8220;1.2.2&#8221;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="errbot.botplugin.BotPlugin.min_err_version">
+<tt class="descname">min_err_version</tt><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.min_err_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.min_err_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>If your plugin has a minimum version of err it needs to be on in order to run, please override accordingly this method.
+returning a string with the dotted minimum version. it MUST be in a 3 dotted numbers format or None
+for example: &#8220;1.2.2&#8221;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.send">
+<tt class="descname">send</tt><big>(</big><em>user</em>, <em>text</em>, <em>in_reply_to=None</em>, <em>message_type='chat'</em><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.send" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Sends asynchronously a message a room or a user.</dt>
+<dd>if it is a room message_type needs to by &#8216;groupchat&#8217; and user the room.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.start_poller">
+<tt class="descname">start_poller</tt><big>(</big><em>interval</em>, <em>method</em>, <em>args=None</em>, <em>kwargs=None</em><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.start_poller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.start_poller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start to poll a method at specific interval in seconds.
+Note : it will call the method with the initial interval delay for the first time
+Also, you can program
+for example : self.program_poller(self,30, fetch_stuff)
+where you have def fetch_stuff(self) in your plugin</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.stop_poller">
+<tt class="descname">stop_poller</tt><big>(</big><em>method=None</em>, <em>args=None</em>, <em>kwargs=None</em><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.stop_poller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.stop_poller" title="Permalink to this definition">¶</a></dt>
+<dd><p>stop poller(s).
+if the method equals None -&gt; it stops all the pollers
+you need to regive the same parameters as the original start_poller to match a specific poller to stop</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPlugin.warn_admins">
+<tt class="descname">warn_admins</tt><big>(</big><em>warning</em><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPlugin.warn_admins"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPlugin.warn_admins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a warning to the administrators of the bot</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="errbot.botplugin.BotPluginBase">
+<em class="property">class </em><tt class="descclassname">errbot.botplugin.</tt><tt class="descname">BotPluginBase</tt><a class="reference internal" href="../_modules/errbot/botplugin/#BotPluginBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPluginBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#errbot.storage.StoreMixin" title="errbot.storage.StoreMixin"><tt class="xref py py-class docutils literal"><span class="pre">errbot.storage.StoreMixin</span></tt></a></p>
+<p>This class handle the basic needs of bot plugins like loading, unloading and creating a storage
+It is the main contract between the plugins and the bot</p>
+<dl class="method">
+<dt id="errbot.botplugin.BotPluginBase.activate">
+<tt class="descname">activate</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPluginBase.activate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPluginBase.activate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override if you want to do something at initialization phase (don&#8217;t forget to super(Gnagna, self).activate())</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPluginBase.deactivate">
+<tt class="descname">deactivate</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPluginBase.deactivate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPluginBase.deactivate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override if you want to do something at tear down phase (don&#8217;t forget to super(Gnagna, self).deactivate())</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPluginBase.poller">
+<tt class="descname">poller</tt><big>(</big><em>interval</em>, <em>method</em>, <em>args</em>, <em>kwargs</em><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPluginBase.poller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPluginBase.poller" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPluginBase.program_next_poll">
+<tt class="descname">program_next_poll</tt><big>(</big><em>interval</em>, <em>method</em>, <em>args</em>, <em>kwargs</em><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPluginBase.program_next_poll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPluginBase.program_next_poll" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPluginBase.start_poller">
+<tt class="descname">start_poller</tt><big>(</big><em>interval</em>, <em>method</em>, <em>args=None</em>, <em>kwargs=None</em><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPluginBase.start_poller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPluginBase.start_poller" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.botplugin.BotPluginBase.stop_poller">
+<tt class="descname">stop_poller</tt><big>(</big><em>method</em>, <em>args=None</em>, <em>kwargs=None</em><big>)</big><a class="reference internal" href="../_modules/errbot/botplugin/#BotPluginBase.stop_poller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.botplugin.BotPluginBase.stop_poller" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="config-template-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">config-template</span></tt> Module<a class="headerlink" href="#config-template-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="config-travisci-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">config-travisci</span></tt> Module<a class="headerlink" href="#config-travisci-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-errbot.errBot">
+<span id="errbot-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">errBot</span></tt> Module<a class="headerlink" href="#module-errbot.errBot" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="errbot.errBot.ErrBot">
+<em class="property">class </em><tt class="descclassname">errbot.errBot.</tt><tt class="descname">ErrBot</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">errbot.backends.base.Backend</span></tt>, <a class="reference internal" href="#errbot.storage.StoreMixin" title="errbot.storage.StoreMixin"><tt class="xref py py-class docutils literal"><span class="pre">errbot.storage.StoreMixin</span></tt></a></p>
+<dl class="attribute">
+<dt id="errbot.errBot.ErrBot.MSG_ERROR_OCCURRED">
+<tt class="descname">MSG_ERROR_OCCURRED</tt><em class="property"> = 'Computer says nooo. See logs for details.'</em><a class="headerlink" href="#errbot.errBot.ErrBot.MSG_ERROR_OCCURRED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="errbot.errBot.ErrBot.MSG_UNKNOWN_COMMAND">
+<tt class="descname">MSG_UNKNOWN_COMMAND</tt><em class="property"> = 'Unknown command: &quot;%(command)s&quot;. '</em><a class="headerlink" href="#errbot.errBot.ErrBot.MSG_UNKNOWN_COMMAND" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.about">
+<tt class="descname">about</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.about"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.about" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns some information about this err instance</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.activate_non_started_plugins">
+<tt class="descname">activate_non_started_plugins</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.activate_non_started_plugins"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.activate_non_started_plugins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.activate_plugin">
+<tt class="descname">activate_plugin</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.activate_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.activate_plugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.add_plugin_repo">
+<tt class="descname">add_plugin_repo</tt><big>(</big><em>name</em>, <em>url</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.add_plugin_repo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.add_plugin_repo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.apropos">
+<tt class="descname">apropos</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.apropos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.apropos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a help string listing available options.</p>
+<p>Automatically assigned to the &#8220;help&#8221; command.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.blacklist">
+<tt class="descname">blacklist</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="headerlink" href="#errbot.errBot.ErrBot.blacklist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blacklist a plugin so that it will not be loaded automatically during bot startup</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.blacklist_plugin">
+<tt class="descname">blacklist_plugin</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.blacklist_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.blacklist_plugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.callback_message">
+<tt class="descname">callback_message</tt><big>(</big><em>conn</em>, <em>mess</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.callback_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.callback_message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.config">
+<tt class="descname">config</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>configure or get the configuration / configuration template for a specific plugin
+ie.
+!config ExampleBot
+could return a template if it is not configured:
+{&#8216;LOGIN&#8217;: <a class="reference external" href="mailto:'example&#37;&#52;&#48;example&#46;com">'example<span>&#64;</span>example<span>&#46;</span>com</a>&#8216;, &#8216;PASSWORD&#8217;: &#8216;password&#8217;, &#8216;DIRECTORY&#8217;: &#8216;/toto&#8217;}
+Copy paste, adapt so can configure the plugin :
+!config ExampleBot {&#8216;LOGIN&#8217;: <a class="reference external" href="mailto:'my&#37;&#52;&#48;email&#46;com">'my<span>&#64;</span>email<span>&#46;</span>com</a>&#8216;, &#8216;PASSWORD&#8217;: &#8216;myrealpassword&#8217;, &#8216;DIRECTORY&#8217;: &#8216;/tmp&#8217;}
+It will then reload the plugin with this config.
+You can at any moment retreive the current values:
+!config ExampleBot
+should return :
+{&#8216;LOGIN&#8217;: <a class="reference external" href="mailto:'my&#37;&#52;&#48;email&#46;com">'my<span>&#64;</span>email<span>&#46;</span>com</a>&#8216;, &#8216;PASSWORD&#8217;: &#8216;myrealpassword&#8217;, &#8216;DIRECTORY&#8217;: &#8216;/tmp&#8217;}</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.connect_callback">
+<tt class="descname">connect_callback</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.connect_callback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.connect_callback" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.deactivate_plugin">
+<tt class="descname">deactivate_plugin</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.deactivate_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.deactivate_plugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.disconnect_callback">
+<tt class="descname">disconnect_callback</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.disconnect_callback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.disconnect_callback" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.echo">
+<tt class="descname">echo</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.echo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.echo" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple echo command. Useful for encoding tests etc ...</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.export_configs">
+<tt class="descname">export_configs</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.export_configs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.export_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all the configs in form of a string you can backup</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="errbot.errBot.ErrBot.formatted_plugin_list">
+<em class="property">static </em><tt class="descname">formatted_plugin_list</tt><big>(</big><em>active_only=True</em><big>)</big><a class="headerlink" href="#errbot.errBot.ErrBot.formatted_plugin_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a formatted, plain-text list of loaded plugins.</p>
+<p>When active_only=True, this will only return plugins which
+are actually active. Otherwise, it will also include inactive
+(blacklisted) plugins.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.get_blacklisted_plugin">
+<tt class="descname">get_blacklisted_plugin</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.get_blacklisted_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.get_blacklisted_plugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.get_command_classes">
+<tt class="descname">get_command_classes</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.get_command_classes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.get_command_classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.get_doc">
+<tt class="descname">get_doc</tt><big>(</big><em>command</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.get_doc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.get_doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get command documentation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.get_installed_plugin_repos">
+<tt class="descname">get_installed_plugin_repos</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.get_installed_plugin_repos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.get_installed_plugin_repos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.get_plugin_configuration">
+<tt class="descname">get_plugin_configuration</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.get_plugin_configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.get_plugin_configuration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.help">
+<tt class="descname">help</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.help"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a help string listing available options.</p>
+<p>Automatically assigned to the &#8220;help&#8221; command.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.history">
+<tt class="descname">history</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.history" title="Permalink to this definition">¶</a></dt>
+<dd><p>display the command history</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.import_configs">
+<tt class="descname">import_configs</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.import_configs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.import_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restore the configs from an export from !export configs
+It will merge with preexisting configurations.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.is_plugin_blacklisted">
+<tt class="descname">is_plugin_blacklisted</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.is_plugin_blacklisted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.is_plugin_blacklisted" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.load">
+<tt class="descname">load</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>load a plugin</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.log_tail">
+<tt class="descname">log_tail</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.log_tail"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.log_tail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display a tail of the log of n lines or 40 by default
+use : !log tail 10</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.reload">
+<tt class="descname">reload</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.reload" title="Permalink to this definition">¶</a></dt>
+<dd><p>reload a plugin</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.repos">
+<tt class="descname">repos</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.repos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.repos" title="Permalink to this definition">¶</a></dt>
+<dd><p>list the current active plugin repositories</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.repos_export">
+<tt class="descname">repos_export</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.repos_export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.repos_export" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all the repos in form of a string you can backup</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.repos_install">
+<tt class="descname">repos_install</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.repos_install"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.repos_install" title="Permalink to this definition">¶</a></dt>
+<dd><p>install a plugin repository from the given source or a known public repo (see !repos to find those).
+for example from a known repo : !install err-codebot
+for example a git url : <a class="reference external" href="mailto:git&#37;&#52;&#48;github&#46;com">git<span>&#64;</span>github<span>&#46;</span>com</a>:gbin/plugin.git
+or an url towards a tar.gz archive : <a class="reference external" href="http://www.gootz.net/plugin-latest.tar.gz">http://www.gootz.net/plugin-latest.tar.gz</a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.repos_uninstall">
+<tt class="descname">repos_uninstall</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.repos_uninstall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.repos_uninstall" title="Permalink to this definition">¶</a></dt>
+<dd><p>uninstall a plugin repository by name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.repos_update">
+<tt class="descname">repos_update</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.repos_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.repos_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>update the bot and/or plugins
+use : !repos update all
+to update everything
+or : !repos update core
+to update only the core
+or : !repos update repo_name repo_name ...
+to update selectively some repos</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.restart">
+<tt class="descname">restart</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.restart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.restart" title="Permalink to this definition">¶</a></dt>
+<dd><p>restart the bot</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.send_message">
+<tt class="descname">send_message</tt><big>(</big><em>mess</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.send_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.send_message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.set_plugin_configuration">
+<tt class="descname">set_plugin_configuration</tt><big>(</big><em>name</em>, <em>obj</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.set_plugin_configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.set_plugin_configuration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.shutdown">
+<tt class="descname">shutdown</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.shutdown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.shutdown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.signal_connect_to_all_plugins">
+<tt class="descname">signal_connect_to_all_plugins</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.signal_connect_to_all_plugins"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.signal_connect_to_all_plugins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="errbot.errBot.ErrBot.startup_time">
+<tt class="descname">startup_time</tt><em class="property"> = datetime.datetime(2014, 1, 6, 22, 34, 13, 121775)</em><a class="headerlink" href="#errbot.errBot.ErrBot.startup_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.status">
+<tt class="descname">status</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.status" title="Permalink to this definition">¶</a></dt>
+<dd><p>If I am alive I should be able to respond to this one</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.unblacklist">
+<tt class="descname">unblacklist</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="headerlink" href="#errbot.errBot.ErrBot.unblacklist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a plugin from the blacklist</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.unblacklist_plugin">
+<tt class="descname">unblacklist_plugin</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.unblacklist_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.unblacklist_plugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.unload">
+<tt class="descname">unload</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.unload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.unload" title="Permalink to this definition">¶</a></dt>
+<dd><p>unload a plugin</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.update_dynamic_plugins">
+<tt class="descname">update_dynamic_plugins</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.update_dynamic_plugins"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.update_dynamic_plugins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.uptime">
+<tt class="descname">uptime</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.uptime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.uptime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the uptime of the bot</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="errbot.errBot.ErrBot.zap_configs">
+<tt class="descname">zap_configs</tt><big>(</big><em>mess</em>, <em>args</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#ErrBot.zap_configs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.ErrBot.zap_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>WARNING : Deletes all the configuration of all the plugins</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="errbot.errBot.get_class_that_defined_method">
+<tt class="descclassname">errbot.errBot.</tt><tt class="descname">get_class_that_defined_method</tt><big>(</big><em>meth</em><big>)</big><a class="reference internal" href="../_modules/errbot/errBot/#get_class_that_defined_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.errBot.get_class_that_defined_method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-errbot.holder">
+<span id="holder-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">holder</span></tt> Module<a class="headerlink" href="#module-errbot.holder" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-errbot.main">
+<span id="main-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">main</span></tt> Module<a class="headerlink" href="#module-errbot.main" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="errbot.main.main">
+<tt class="descclassname">errbot.main.</tt><tt class="descname">main</tt><big>(</big><em>bot_class</em>, <em>logger</em><big>)</big><a class="reference internal" href="../_modules/errbot/main/#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.main.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-errbot.pid">
+<span id="pid-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">pid</span></tt> Module<a class="headerlink" href="#module-errbot.pid" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="errbot.pid.PidFile">
+<em class="property">class </em><tt class="descclassname">errbot.pid.</tt><tt class="descname">PidFile</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="../_modules/errbot/pid/#PidFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.pid.PidFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">builtins.object</span></tt></p>
+<p>Context manager that locks a pid file.  Implemented as class
+not generator because daemon.py is calling .__exit__() with no parameters
+instead of the None, None, None specified by PEP-343.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-errbot.plugin_manager">
+<span id="plugin-manager-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">plugin_manager</span></tt> Module<a class="headerlink" href="#module-errbot.plugin_manager" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="errbot.plugin_manager.IncompatiblePluginException">
+<em class="property">exception </em><tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">IncompatiblePluginException</tt><a class="reference internal" href="../_modules/errbot/plugin_manager/#IncompatiblePluginException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.IncompatiblePluginException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">builtins.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="errbot.plugin_manager.PluginConfigurationException">
+<em class="property">exception </em><tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">PluginConfigurationException</tt><a class="reference internal" href="../_modules/errbot/plugin_manager/#PluginConfigurationException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.PluginConfigurationException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">builtins.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.activate_plugin_with_version_check">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">activate_plugin_with_version_check</tt><big>(</big><em>name</em>, <em>config</em><big>)</big><a class="reference internal" href="../_modules/errbot/plugin_manager/#activate_plugin_with_version_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.activate_plugin_with_version_check" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.check_dependencies">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">check_dependencies</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="../_modules/errbot/plugin_manager/#check_dependencies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.check_dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.deactivate_all_plugins">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">deactivate_all_plugins</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/plugin_manager/#deactivate_all_plugins"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.deactivate_all_plugins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.deactivate_plugin_by_name">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">deactivate_plugin_by_name</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../_modules/errbot/plugin_manager/#deactivate_plugin_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.deactivate_plugin_by_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.get_all_active_plugin_names">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">get_all_active_plugin_names</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/plugin_manager/#get_all_active_plugin_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.get_all_active_plugin_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.get_all_active_plugin_objects">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">get_all_active_plugin_objects</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/plugin_manager/#get_all_active_plugin_objects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.get_all_active_plugin_objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.get_all_plugin_names">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">get_all_plugin_names</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/plugin_manager/#get_all_plugin_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.get_all_plugin_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.get_all_plugins">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">get_all_plugins</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/plugin_manager/#get_all_plugins"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.get_all_plugins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.get_builtins">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">get_builtins</tt><big>(</big><em>extra</em><big>)</big><a class="reference internal" href="../_modules/errbot/plugin_manager/#get_builtins"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.get_builtins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.get_plugin_by_name">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">get_plugin_by_name</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#errbot.plugin_manager.get_plugin_by_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.get_plugin_obj_by_name">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">get_plugin_obj_by_name</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../_modules/errbot/plugin_manager/#get_plugin_obj_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.get_plugin_obj_by_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.global_restart">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">global_restart</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/plugin_manager/#global_restart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.global_restart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.init_plugin_manager">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">init_plugin_manager</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/plugin_manager/#init_plugin_manager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.init_plugin_manager" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.populate_doc">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">populate_doc</tt><big>(</big><em>plugin</em><big>)</big><a class="reference internal" href="../_modules/errbot/plugin_manager/#populate_doc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.populate_doc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.reload_plugin_by_name">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">reload_plugin_by_name</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#errbot.plugin_manager.reload_plugin_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Completely reload the given plugin, including reloading of the module&#8217;s code</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="errbot.plugin_manager.update_plugin_places">
+<tt class="descclassname">errbot.plugin_manager.</tt><tt class="descname">update_plugin_places</tt><big>(</big><em>list</em><big>)</big><a class="reference internal" href="../_modules/errbot/plugin_manager/#update_plugin_places"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.plugin_manager.update_plugin_places" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-errbot.repos">
+<span id="repos-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">repos</span></tt> Module<a class="headerlink" href="#module-errbot.repos" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-errbot.storage">
+<span id="storage-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">storage</span></tt> Module<a class="headerlink" href="#module-errbot.storage" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="errbot.storage.StoreAlreadyOpenError">
+<em class="property">exception </em><tt class="descclassname">errbot.storage.</tt><tt class="descname">StoreAlreadyOpenError</tt><a class="headerlink" href="#errbot.storage.StoreAlreadyOpenError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#errbot.storage.StoreException" title="errbot.storage.StoreException"><tt class="xref py py-class docutils literal"><span class="pre">errbot.storage.StoreException</span></tt></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="errbot.storage.StoreException">
+<em class="property">exception </em><tt class="descclassname">errbot.storage.</tt><tt class="descname">StoreException</tt><a class="headerlink" href="#errbot.storage.StoreException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">builtins.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="errbot.storage.StoreMixin">
+<em class="property">class </em><tt class="descclassname">errbot.storage.</tt><tt class="descname">StoreMixin</tt><a class="reference internal" href="../_modules/errbot/storage/#StoreMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.storage.StoreMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">collections.abc.MutableMapping</span></tt></p>
+<p>This class handle the basic needs of bot plugins and core like loading, unloading and creating a storage</p>
+<dl class="method">
+<dt id="errbot.storage.StoreMixin.close_storage">
+<tt class="descname">close_storage</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/storage/#StoreMixin.close_storage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.storage.StoreMixin.close_storage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.storage.StoreMixin.keys">
+<tt class="descname">keys</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/storage/#StoreMixin.keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.storage.StoreMixin.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="errbot.storage.StoreMixin.open_storage">
+<tt class="descname">open_storage</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="../_modules/errbot/storage/#StoreMixin.open_storage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.storage.StoreMixin.open_storage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="errbot.storage.StoreNotOpenError">
+<em class="property">exception </em><tt class="descclassname">errbot.storage.</tt><tt class="descname">StoreNotOpenError</tt><a class="headerlink" href="#errbot.storage.StoreNotOpenError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#errbot.storage.StoreException" title="errbot.storage.StoreException"><tt class="xref py py-class docutils literal"><span class="pre">errbot.storage.StoreException</span></tt></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-errbot.templating">
+<span id="templating-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">templating</span></tt> Module<a class="headerlink" href="#module-errbot.templating" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="errbot.templating.add_plugin_templates_path">
+<tt class="descclassname">errbot.templating.</tt><tt class="descname">add_plugin_templates_path</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="../_modules/errbot/templating/#add_plugin_templates_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.templating.add_plugin_templates_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.templating.make_templates_from_plugin_path">
+<tt class="descclassname">errbot.templating.</tt><tt class="descname">make_templates_from_plugin_path</tt><big>(</big><em>plugin_path</em><big>)</big><a class="reference internal" href="../_modules/errbot/templating/#make_templates_from_plugin_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.templating.make_templates_from_plugin_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.templating.make_templates_path">
+<tt class="descclassname">errbot.templating.</tt><tt class="descname">make_templates_path</tt><big>(</big><em>root</em><big>)</big><a class="reference internal" href="../_modules/errbot/templating/#make_templates_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.templating.make_templates_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.templating.remove_plugin_templates_path">
+<tt class="descclassname">errbot.templating.</tt><tt class="descname">remove_plugin_templates_path</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="../_modules/errbot/templating/#remove_plugin_templates_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.templating.remove_plugin_templates_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.templating.tenv">
+<tt class="descclassname">errbot.templating.</tt><tt class="descname">tenv</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/errbot/templating/#tenv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.templating.tenv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-errbot.utils">
+<span id="utils-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">utils</span></tt> Module<a class="headerlink" href="#module-errbot.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="errbot.utils.RateLimited">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">RateLimited</tt><big>(</big><em>minInterval</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#RateLimited"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.RateLimited" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="errbot.utils.ValidationException">
+<em class="property">exception </em><tt class="descclassname">errbot.utils.</tt><tt class="descname">ValidationException</tt><a class="reference internal" href="../_modules/errbot/utils/#ValidationException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.ValidationException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">builtins.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="errbot.utils.drawbar">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">drawbar</tt><big>(</big><em>value</em>, <em>max</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#drawbar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.drawbar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.utils.format_timedelta">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">format_timedelta</tt><big>(</big><em>timedelta</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#format_timedelta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.format_timedelta" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.utils.get_class_for_method">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">get_class_for_method</tt><big>(</big><em>meth</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#get_class_for_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.get_class_for_method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.utils.get_sender_username">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">get_sender_username</tt><big>(</big><em>mess</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#get_sender_username"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.get_sender_username" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the sender&#8217;s user name from a message</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="errbot.utils.human_name_for_git_url">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">human_name_for_git_url</tt><big>(</big><em>url</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#human_name_for_git_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.human_name_for_git_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.utils.mess_2_embeddablehtml">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">mess_2_embeddablehtml</tt><big>(</big><em>mess</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#mess_2_embeddablehtml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.mess_2_embeddablehtml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.utils.parse_jid">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">parse_jid</tt><big>(</big><em>jid</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#parse_jid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.parse_jid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.utils.recurse_check_structure">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">recurse_check_structure</tt><big>(</big><em>sample</em>, <em>to_check</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#recurse_check_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.recurse_check_structure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.utils.split_string_after">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">split_string_after</tt><big>(</big><em>str_</em>, <em>n</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#split_string_after"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.split_string_after" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yield chunks of length <cite>n</cite> from the given string</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="errbot.utils.tail">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">tail</tt><big>(</big><em>f</em>, <em>window=20</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#tail"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.tail" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.utils.unescape_xml">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">unescape_xml</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#unescape_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.unescape_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes HTML or XML character references and entities from a text string.
+&#64;param text The HTML (or XML) source text.
+&#64;return The plain text, as a Unicode string, if necessary.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="errbot.utils.utf8">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">utf8</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#utf8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.utf8" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.utils.version2array">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">version2array</tt><big>(</big><em>version</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#version2array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.version2array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.utils.which">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">which</tt><big>(</big><em>program</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#which"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.which" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="errbot.utils.xhtml2txt">
+<tt class="descclassname">errbot.utils.</tt><tt class="descname">xhtml2txt</tt><big>(</big><em>xhtml</em><big>)</big><a class="reference internal" href="../_modules/errbot/utils/#xhtml2txt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#errbot.utils.xhtml2txt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-errbot.version">
+<span id="version-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">version</span></tt> Module<a class="headerlink" href="#module-errbot.version" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <a class="logo" href="../" title="Back to home page">
+        <img class="logo" src="../_static/err_speech.png" width="220" height="135" alt="Logo of Err" />
+    </a>
+  <h3><a href="../">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">API reference</a></li>
+<li><a class="reference internal" href="#errbot-package">errbot Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">errbot</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-errbot.botplugin"><tt class="docutils literal"><span class="pre">botplugin</span></tt> Module</a></li>
+<li><a class="reference internal" href="#config-template-module"><tt class="docutils literal"><span class="pre">config-template</span></tt> Module</a></li>
+<li><a class="reference internal" href="#config-travisci-module"><tt class="docutils literal"><span class="pre">config-travisci</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-errbot.errBot"><tt class="docutils literal"><span class="pre">errBot</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-errbot.holder"><tt class="docutils literal"><span class="pre">holder</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-errbot.main"><tt class="docutils literal"><span class="pre">main</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-errbot.pid"><tt class="docutils literal"><span class="pre">pid</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-errbot.plugin_manager"><tt class="docutils literal"><span class="pre">plugin_manager</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-errbot.repos"><tt class="docutils literal"><span class="pre">repos</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-errbot.storage"><tt class="docutils literal"><span class="pre">storage</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-errbot.templating"><tt class="docutils literal"><span class="pre">templating</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-errbot.utils"><tt class="docutils literal"><span class="pre">utils</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-errbot.version"><tt class="docutils literal"><span class="pre">version</span></tt> Module</a></li>
+<li><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../">Homepage</a></li>
+    <li><a href="../genindex/">Index</a></li>
+  <li><a href="../py-modindex/">Module index</a></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/api.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <script>
+    $(document).ready(function() {
+        $('.fancybox').fancybox({
+            padding : 0,
+            openEffect  : 'elastic'
+        });
+    });
+  </script>
+ <div class="relbar2">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../">Err 2.0.0-rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+ </div>
+  <div class="footer">
+    &copy; Copyright 2013, Guillaume Binet, Tali Davidovich Petrover and Nick Groenen.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

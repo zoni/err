@@ -1,0 +1,406 @@
+
+<!doctype html>
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>errbot.utils &mdash; Err 2.0.0-rc2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/err.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.0-rc2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Err 2.0.0-rc2 documentation" href="../../../" />
+    <link rel="up" title="errbot" href="../" />
+  <link rel="icon" type="image/png" href="../../../_static/err.png" />
+  <link rel="apple-touch-icon" href="../../../_static/err.png" />
+  <link rel="stylesheet" href="../../../_static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="../../../_static/fancybox/jquery.fancybox.pack.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32534172-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../">Err 2.0.0-rc2 documentation</a> &raquo;</li>
+          <li><a href="../../" >Module code</a> &raquo;</li>
+          <li><a href="../" accesskey="U">errbot</a> &raquo;</li> 
+      </ul>
+    </div>
+    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for errbot.utils</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">html</span> <span class="kn">import</span> <span class="n">entities</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">xml.etree.ElementTree</span> <span class="kn">import</span> <span class="n">tostring</span>
+
+<span class="n">PY3</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span>
+<span class="n">PY2</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">PY3</span>
+
+<span class="n">PLUGINS_SUBDIR</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;plugins&#39;</span> <span class="k">if</span> <span class="n">PY2</span> <span class="k">else</span> <span class="s">&#39;plugins&#39;</span>
+
+
+<div class="viewcode-block" id="get_sender_username"><a class="viewcode-back" href="../../../api/#errbot.utils.get_sender_username">[docs]</a><span class="k">def</span> <span class="nf">get_sender_username</span><span class="p">(</span><span class="n">mess</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract the sender&#39;s user name from a message&quot;&quot;&quot;</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="n">mess</span><span class="o">.</span><span class="n">getType</span><span class="p">()</span>
+    <span class="n">jid</span> <span class="o">=</span> <span class="n">mess</span><span class="o">.</span><span class="n">getFrom</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s">&quot;groupchat&quot;</span><span class="p">:</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">jid</span><span class="o">.</span><span class="n">getResource</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s">&quot;chat&quot;</span><span class="p">:</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">jid</span><span class="o">.</span><span class="n">getNode</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">username</span>
+
+</div>
+<div class="viewcode-block" id="format_timedelta"><a class="viewcode-back" href="../../../api/#errbot.utils.format_timedelta">[docs]</a><span class="k">def</span> <span class="nf">format_timedelta</span><span class="p">(</span><span class="n">timedelta</span><span class="p">):</span>
+    <span class="n">total_seconds</span> <span class="o">=</span> <span class="n">timedelta</span><span class="o">.</span><span class="n">seconds</span> <span class="o">+</span> <span class="p">(</span><span class="mi">86400</span> <span class="o">*</span> <span class="n">timedelta</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+    <span class="n">hours</span><span class="p">,</span> <span class="n">remainder</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">total_seconds</span><span class="p">,</span> <span class="mi">3600</span><span class="p">)</span>
+    <span class="n">minutes</span><span class="p">,</span> <span class="n">seconds</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">remainder</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">hours</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">minutes</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&#39;</span><span class="si">%i</span><span class="s"> seconds&#39;</span> <span class="o">%</span> <span class="n">seconds</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">hours</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&#39;</span><span class="si">%i</span><span class="s"> minutes&#39;</span> <span class="o">%</span> <span class="n">minutes</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">minutes</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&#39;</span><span class="si">%i</span><span class="s"> hours&#39;</span> <span class="o">%</span> <span class="n">hours</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&#39;</span><span class="si">%i</span><span class="s"> hours and </span><span class="si">%i</span><span class="s"> minutes&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="n">minutes</span><span class="p">)</span>
+
+</div>
+<span class="n">BAR_WIDTH</span> <span class="o">=</span> <span class="mf">15.0</span>
+
+
+<div class="viewcode-block" id="drawbar"><a class="viewcode-back" href="../../../api/#errbot.utils.drawbar">[docs]</a><span class="k">def</span> <span class="nf">drawbar</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">max</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">max</span><span class="p">:</span>
+        <span class="n">value_in_chr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">value</span> <span class="o">*</span> <span class="n">BAR_WIDTH</span> <span class="o">/</span> <span class="nb">max</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">value_in_chr</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="s">&#39;[&#39;</span> <span class="o">+</span> <span class="s">&#39;█&#39;</span> <span class="o">*</span> <span class="n">value_in_chr</span> <span class="o">+</span> <span class="s">&#39;▒&#39;</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">BAR_WIDTH</span> <span class="o">-</span> <span class="n">value_in_chr</span><span class="p">))</span> <span class="o">+</span> <span class="s">&#39;]&#39;</span>
+
+
+<span class="c"># Introspect to know from which plugin a command is implemented</span></div>
+<div class="viewcode-block" id="get_class_for_method"><a class="viewcode-back" href="../../../api/#errbot.utils.get_class_for_method">[docs]</a><span class="k">def</span> <span class="nf">get_class_for_method</span><span class="p">(</span><span class="n">meth</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">cls</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmro</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">meth</span><span class="o">.</span><span class="n">__self__</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">meth</span><span class="o">.</span><span class="n">__name__</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">__dict__</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cls</span>
+    <span class="k">return</span> <span class="bp">None</span>
+
+</div>
+<div class="viewcode-block" id="human_name_for_git_url"><a class="viewcode-back" href="../../../api/#errbot.utils.human_name_for_git_url">[docs]</a><span class="k">def</span> <span class="nf">human_name_for_git_url</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="c"># try to humanize the last part of the git url as much as we can</span>
+    <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">)</span>
+    <span class="n">last_part</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">last_part</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="k">if</span> <span class="n">last_part</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;.git&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">last_part</span>
+
+</div>
+<div class="viewcode-block" id="tail"><a class="viewcode-back" href="../../../api/#errbot.utils.tail">[docs]</a><span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()[</span><span class="o">-</span><span class="n">window</span><span class="p">:])</span>
+
+</div>
+<div class="viewcode-block" id="which"><a class="viewcode-back" href="../../../api/#errbot.utils.which">[docs]</a><span class="k">def</span> <span class="nf">which</span><span class="p">(</span><span class="n">program</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">is_exe</span><span class="p">(</span><span class="n">fpath</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">fpath</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">X_OK</span><span class="p">)</span>
+
+    <span class="n">fpath</span><span class="p">,</span> <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">program</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fpath</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_exe</span><span class="p">(</span><span class="n">program</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">program</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&quot;PATH&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">):</span>
+            <span class="n">exe_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">program</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">is_exe</span><span class="p">(</span><span class="n">exe_file</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">exe_file</span>
+
+    <span class="k">return</span> <span class="bp">None</span>
+</div>
+<span class="n">INVALID_VERSION_EXCEPTION</span> <span class="o">=</span> <span class="s">&#39;version </span><span class="si">%s</span><span class="s"> in not in format &quot;x.y.z&quot; or &quot;x.y.z-{beta,alpha,rc1,rc2...}&quot; for example &quot;1.2.2&quot;&#39;</span>
+
+
+<div class="viewcode-block" id="version2array"><a class="viewcode-back" href="../../../api/#errbot.utils.version2array">[docs]</a><span class="k">def</span> <span class="nf">version2array</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>
+    <span class="n">vsplit</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vsplit</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">main</span><span class="p">,</span> <span class="n">sub</span> <span class="o">=</span> <span class="n">vsplit</span>
+        <span class="k">if</span> <span class="n">sub</span> <span class="o">==</span> <span class="s">&#39;alpha&#39;</span><span class="p">:</span>
+            <span class="n">sub_int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">sub</span> <span class="o">==</span> <span class="s">&#39;beta&#39;</span><span class="p">:</span>
+            <span class="n">sub_int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">sub</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;rc&#39;</span><span class="p">):</span>
+            <span class="n">sub_int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">INVALID_VERSION_EXCEPTION</span> <span class="o">%</span> <span class="n">version</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">vsplit</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">main</span> <span class="o">=</span> <span class="n">vsplit</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">sub_int</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">INVALID_VERSION_EXCEPTION</span> <span class="o">%</span> <span class="n">version</span><span class="p">)</span>
+
+
+    <span class="n">response</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">el</span><span class="p">)</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">main</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)]</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub_int</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">INVALID_VERSION_EXCEPTION</span> <span class="o">%</span> <span class="n">version</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">response</span>
+
+</div>
+<div class="viewcode-block" id="ValidationException"><a class="viewcode-back" href="../../../api/#errbot.utils.ValidationException">[docs]</a><span class="k">class</span> <span class="nc">ValidationException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="recurse_check_structure"><a class="viewcode-back" href="../../../api/#errbot.utils.recurse_check_structure">[docs]</a><span class="k">def</span> <span class="nf">recurse_check_structure</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">to_check</span><span class="p">):</span>
+    <span class="n">sample_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+    <span class="n">to_check_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">to_check</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">PY2</span> <span class="ow">and</span> <span class="n">to_check_type</span><span class="o">.</span><span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;str&#39;</span><span class="p">:</span>  <span class="c"># __name__ to avoid beeing touched by 3to2</span>
+        <span class="c">#noinspection PyUnresolvedReferences</span>
+        <span class="n">to_check_type</span> <span class="o">=</span> <span class="nb">unicode</span>
+        <span class="n">to_check</span> <span class="o">=</span> <span class="n">to_check</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+    <span class="c"># Skip this check if the sample is None because it will always be something</span>
+    <span class="c"># other than NoneType when changed from the default. Raising ValidationException</span>
+    <span class="c"># would make no sense then because it would defeat the whole purpose of having</span>
+    <span class="c"># that key in the sample when it could only ever be None.</span>
+    <span class="k">if</span> <span class="n">sample</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">sample_type</span> <span class="o">!=</span> <span class="n">to_check_type</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationException</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s"> [</span><span class="si">%s</span><span class="s">] is not the same type as </span><span class="si">%s</span><span class="s"> [</span><span class="si">%s</span><span class="s">]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">sample_type</span><span class="p">,</span> <span class="n">to_check</span><span class="p">,</span> <span class="n">to_check_type</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">sample_type</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">to_check</span><span class="p">:</span>
+            <span class="n">recurse_check_structure</span><span class="p">(</span><span class="n">sample</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">element</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">sample_type</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">sample</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">to_check</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ValidationException</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> doesn&#39;t contain the key </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">to_check</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">to_check</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sample</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ValidationException</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> contains an unknown key </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">to_check</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">sample</span><span class="p">:</span>
+            <span class="n">recurse_check_structure</span><span class="p">(</span><span class="n">sample</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">to_check</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+        <span class="k">return</span>
+
+</div>
+<div class="viewcode-block" id="unescape_xml"><a class="viewcode-back" href="../../../api/#errbot.utils.unescape_xml">[docs]</a><span class="k">def</span> <span class="nf">unescape_xml</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Removes HTML or XML character references and entities from a text string.</span>
+<span class="sd">    @param text The HTML (or XML) source text.</span>
+<span class="sd">    @return The plain text, as a Unicode string, if necessary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">fixup</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;&amp;#&quot;</span><span class="p">:</span>
+            <span class="c"># character reference</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">text</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;&amp;#x&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">16</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># named entity</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">entities</span><span class="o">.</span><span class="n">name2codepoint</span><span class="p">[</span><span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">text</span>  <span class="c"># leave as is</span>
+
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&quot;&amp;#?\w+;&quot;</span><span class="p">,</span> <span class="n">fixup</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+</div>
+<span class="n">REMOVE_EOL</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;\n&#39;</span><span class="p">)</span>
+<span class="n">REINSERT_EOLS</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;&lt;/p&gt;|&lt;/li&gt;|&lt;br/&gt;&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+<span class="n">ZAP_TAGS</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;&lt;[^&gt;]+&gt;&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="xhtml2txt"><a class="viewcode-back" href="../../../api/#errbot.utils.xhtml2txt">[docs]</a><span class="k">def</span> <span class="nf">xhtml2txt</span><span class="p">(</span><span class="n">xhtml</span><span class="p">):</span>
+    <span class="n">text_plain</span> <span class="o">=</span> <span class="n">REMOVE_EOL</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">xhtml</span><span class="p">)</span>  <span class="c"># Ignore formatting TODO exclude pre</span>
+    <span class="n">text_plain</span> <span class="o">=</span> <span class="n">REINSERT_EOLS</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">text_plain</span><span class="p">)</span>  <span class="c"># readd the \n where they probably fit best</span>
+    <span class="n">text_plain</span> <span class="o">=</span> <span class="n">ZAP_TAGS</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">text_plain</span><span class="p">)</span>  <span class="c"># zap every tag left</span>
+    <span class="k">return</span> <span class="n">unescape_xml</span><span class="p">(</span><span class="n">text_plain</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="utf8"><a class="viewcode-back" href="../../../api/#errbot.utils.utf8">[docs]</a><span class="k">def</span> <span class="nf">utf8</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>  <span class="c"># it defaults to utf-8</span>
+    <span class="k">return</span> <span class="n">key</span>
+
+</div>
+<div class="viewcode-block" id="mess_2_embeddablehtml"><a class="viewcode-back" href="../../../api/#errbot.utils.mess_2_embeddablehtml">[docs]</a><span class="k">def</span> <span class="nf">mess_2_embeddablehtml</span><span class="p">(</span><span class="n">mess</span><span class="p">):</span>
+    <span class="n">html_content</span> <span class="o">=</span> <span class="n">mess</span><span class="o">.</span><span class="n">getHTML</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">html_content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="n">html_content</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;{http://jabber.org/protocol/xhtml-im}body&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">body</span><span class="o">.</span><span class="n">getchildren</span><span class="p">():</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="n">tostring</span><span class="p">(</span><span class="n">child</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;ns0:&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="bp">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mess</span><span class="o">.</span><span class="n">getBody</span><span class="p">(),</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="parse_jid"><a class="viewcode-back" href="../../../api/#errbot.utils.parse_jid">[docs]</a><span class="k">def</span> <span class="nf">parse_jid</span><span class="p">(</span><span class="n">jid</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">jid</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;@&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">split_jid</span> <span class="o">=</span> <span class="n">jid</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;@&#39;</span><span class="p">)</span>
+        <span class="n">node</span><span class="p">,</span> <span class="n">domain</span> <span class="o">=</span> <span class="s">&#39;@&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split_jid</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">split_jid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">domain</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">domain</span><span class="p">,</span> <span class="n">resource</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>  <span class="c"># hack for IRC where you can have several slashes here</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">resource</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">jid</span>
+        <span class="n">domain</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">resource</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">return</span> <span class="n">node</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">resource</span>
+
+</div>
+<div class="viewcode-block" id="RateLimited"><a class="viewcode-back" href="../../../api/#errbot.utils.RateLimited">[docs]</a><span class="k">def</span> <span class="nf">RateLimited</span><span class="p">(</span><span class="n">minInterval</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="n">lastTimeCalled</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">rateLimitedFunction</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+            <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">lastTimeCalled</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Elapsed </span><span class="si">%f</span><span class="s"> since last call&#39;</span> <span class="o">%</span> <span class="n">elapsed</span><span class="p">)</span>
+            <span class="n">leftToWait</span> <span class="o">=</span> <span class="n">minInterval</span> <span class="o">-</span> <span class="n">elapsed</span>
+            <span class="k">if</span> <span class="n">leftToWait</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Wait </span><span class="si">%f</span><span class="s"> due to rate limiting...&#39;</span> <span class="o">%</span> <span class="n">leftToWait</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">leftToWait</span><span class="p">)</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">)</span>
+            <span class="n">lastTimeCalled</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">ret</span>
+
+        <span class="k">return</span> <span class="n">rateLimitedFunction</span>
+
+    <span class="k">return</span> <span class="n">decorate</span>
+
+</div>
+<div class="viewcode-block" id="split_string_after"><a class="viewcode-back" href="../../../api/#errbot.utils.split_string_after">[docs]</a><span class="k">def</span> <span class="nf">split_string_after</span><span class="p">(</span><span class="n">str_</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Yield chunks of length `n` from the given string&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">str_</span><span class="p">),</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">str_</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span><span class="o">+</span><span class="n">n</span><span class="p">]</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <a class="logo" href="../../../" title="Back to home page">
+        <img class="logo" src="../../../_static/err_speech.png" width="220" height="135" alt="Logo of Err" />
+    </a><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../">Homepage</a></li>
+    <li><a href="../../../genindex/">Index</a></li>
+  <li><a href="../../../py-modindex/">Module index</a></li>
+      <li>
+          <a href="../../">Module code</a>
+          <ul>
+      <li>
+          <a href="../">errbot</a>
+          <ul>
+          </ul>
+      </li>
+          </ul>
+      </li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search/" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <script>
+    $(document).ready(function() {
+        $('.fancybox').fancybox({
+            padding : 0,
+            openEffect  : 'elastic'
+        });
+    });
+  </script>
+ <div class="relbar2">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../">Err 2.0.0-rc2 documentation</a> &raquo;</li>
+          <li><a href="../../" >Module code</a> &raquo;</li>
+          <li><a href="../" >errbot</a> &raquo;</li> 
+      </ul>
+    </div>
+ </div>
+  <div class="footer">
+    &copy; Copyright 2013, Guillaume Binet, Tali Davidovich Petrover and Nick Groenen.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

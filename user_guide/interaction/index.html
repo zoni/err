@@ -1,0 +1,197 @@
+
+<!doctype html>
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Interacting with the Bot &mdash; Err 2.0.0-rc2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/err.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.0-rc2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Err 2.0.0-rc2 documentation" href="../../" />
+    <link rel="next" title="Plugin development" href="../plugin_development/" />
+    <link rel="prev" title="Setup" href="../setup/" />
+  <link rel="icon" type="image/png" href="../../_static/err.png" />
+  <link rel="apple-touch-icon" href="../../_static/err.png" />
+  <link rel="stylesheet" href="../../_static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="../../_static/fancybox/jquery.fancybox.pack.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32534172-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../plugin_development/" title="Plugin development"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../setup/" title="Setup"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../">Err 2.0.0-rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="interacting-with-the-bot">
+<h1>Interacting with the Bot<a class="headerlink" href="#interacting-with-the-bot" title="Permalink to this headline">¶</a></h1>
+<p>After starting Err, you should add the bot to your buddy list if you haven&#8217;t already.
+You can now send commands directly to the bot, or issue commands in a chatroom that
+the bot has also joined.</p>
+<div class="section" id="accessing-the-built-in-help-function">
+<span id="builtin-help-function"></span><h2>Accessing the built-in help function<a class="headerlink" href="#accessing-the-built-in-help-function" title="Permalink to this headline">¶</a></h2>
+<p>To get a list of all available commands, you can issue:</p>
+<div class="highlight-python"><pre>!help full</pre>
+</div>
+<p>If you just wish to know more about a specific command you can issue:</p>
+<div class="highlight-python"><pre>!help command</pre>
+</div>
+</div>
+<div class="section" id="managing-plugins">
+<h2>Managing plugins<a class="headerlink" href="#managing-plugins" title="Permalink to this headline">¶</a></h2>
+<p>To get a list of public plugin repos you can issue:</p>
+<div class="highlight-python"><pre>!repos</pre>
+</div>
+<p>To install a plugin from this list, issue:</p>
+<div class="highlight-python"><pre>!repos install &lt;name of plugin&gt;</pre>
+</div>
+<p>You can always uninstall a plugin again with:</p>
+<div class="highlight-python"><pre>!repos uninstall &lt;plugin&gt;</pre>
+</div>
+<p>You will probably want to update your plugins periodically. This can be done with:</p>
+<div class="highlight-python"><pre>!repos update all</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please pay attention when you install a plugin, it may have additional
+dependencies. If the plugin contains a <cite>requirements.txt</cite> file then Err
+wil automatically check the requirements listed within and warn you when
+you are missing any.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <a class="logo" href="../../" title="Back to home page">
+        <img class="logo" src="../../_static/err_speech.png" width="220" height="135" alt="Logo of Err" />
+    </a>
+  <h3><a href="../../">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Interacting with the Bot</a><ul>
+<li><a class="reference internal" href="#accessing-the-built-in-help-function">Accessing the built-in help function</a></li>
+<li><a class="reference internal" href="#managing-plugins">Managing plugins</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../">Homepage</a></li>
+    <li><a href="../../genindex/">Index</a></li>
+  <li><a href="../../py-modindex/">Module index</a></li>
+          <li>Previous: <a href="../setup/" title="previous chapter">Setup</a></li>
+          <li>Next: <a href="../plugin_development/" title="next chapter">Plugin development</a></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/user_guide/interaction.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search/" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <script>
+    $(document).ready(function() {
+        $('.fancybox').fancybox({
+            padding : 0,
+            openEffect  : 'elastic'
+        });
+    });
+  </script>
+ <div class="relbar2">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../plugin_development/" title="Plugin development"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../setup/" title="Setup"
+             >previous</a> |</li>
+        <li><a href="../../">Err 2.0.0-rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+ </div>
+  <div class="footer">
+    &copy; Copyright 2013, Guillaume Binet, Tali Davidovich Petrover and Nick Groenen.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

@@ -1,0 +1,242 @@
+
+<!doctype html>
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Setup &mdash; Err 2.0.0-rc2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/err.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.0-rc2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Err 2.0.0-rc2 documentation" href="../../" />
+    <link rel="next" title="Interacting with the Bot" href="../interaction/" />
+    <link rel="prev" title="Multiple server back-ends" href="../../features/" />
+  <link rel="icon" type="image/png" href="../../_static/err.png" />
+  <link rel="apple-touch-icon" href="../../_static/err.png" />
+  <link rel="stylesheet" href="../../_static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="../../_static/fancybox/jquery.fancybox.pack.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32534172-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../interaction/" title="Interacting with the Bot"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../features/" title="Multiple server back-ends"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../">Err 2.0.0-rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="setup">
+<h1>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>Err runs under Python 2.7 as well as Python 3.2+ on Linux, Windows and Mac.</p>
+<p>You need to have registered a user for the bot to use on the XMPP or IRC server that
+you wish to run Err on. A lot of plugins use multi user chatrooms (MUC) as well, so
+it is recommended (but not required) to have a least one MUC for Err to use as well.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Err may be installed directly from PyPi using <cite>pip</cite> (<cite>easy_install</cite> works too) by issuing:</p>
+<div class="highlight-python"><pre>pip install err</pre>
+</div>
+<p>Or if you wish to try out the latest, bleeding edge version:</p>
+<div class="highlight-python"><pre>pip install https://github.com/gbin/err/archive/master.zip</pre>
+</div>
+<p>However, in these cases, installing into a dedicated <a class="reference external" href="https://pypi.python.org/pypi/virtualenv">virtualenv</a> is recommended.</p>
+<p>On some distributions, Err is available as a package via your usual package manager.
+In these cases, it is generally recommended to use your distribution&#8217;s package instead
+of installing from PyPi.</p>
+<div class="section" id="extra-dependencies">
+<h3>Extra dependencies<a class="headerlink" href="#extra-dependencies" title="Permalink to this headline">¶</a></h3>
+<p>requirements.txt lists only the bare minimum list of dependencies needed to run Err.
+Depending on the backend you choose, additional requirements need to be installed.</p>
+<p>For the XMPP based backends you must also install:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sleekxmpp</span>
+<span class="n">pyasn1</span>
+<span class="n">pyasn1</span><span class="o">-</span><span class="n">modules</span>
+<span class="n">dnspython3</span>  <span class="c"># dnspython for Python 2.7</span>
+</pre></div>
+</div>
+<p>For the IRC backend, you must install:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">irc</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>After installing Err, you must create a data directory somewhere on your system where
+config and data may be stored. Find the installation directory of Err, then copy the
+file <a class="reference download internal" href="../../_downloads/config-template.py"><tt class="xref download docutils literal"><span class="pre">config-template.py</span></tt></a> to your data directory as <em>config.py</em></p>
+<p>Read the documentation within this file and edit the values as needed so the bot can
+connect to your chosen XMPP or IRC server.</p>
+</div>
+<div class="section" id="starting-the-daemon">
+<h2>Starting the daemon<a class="headerlink" href="#starting-the-daemon" title="Permalink to this headline">¶</a></h2>
+<p>The first time you start Err, it is recommended to run it in foreground mode. This can
+be done with:</p>
+<div class="highlight-python"><pre>&lt;path_to_install_directory&gt;/scripts/err.py</pre>
+</div>
+<p>In many cases, just typing err.py will be enough as it is generally added to the PATH
+automatically. Please pass -h or &#8211;help to err.py to get a list of supported parameters.
+Depending on your situation, you may need to pass &#8211;config or &#8211;backend when starting
+Err.</p>
+<p>If all that worked, you can now use the -d (or &#8211;daemon) parameter to run it in a
+detached mode:</p>
+<div class="highlight-python"><pre>&lt;path_to_install_directory&gt;/scripts/err.py --daemon</pre>
+</div>
+<p>If you are going to run your bot all the time then using some process control system
+such as <a class="reference external" href="http://supervisord.org/">supervisor</a> is highly recommended. Installing and configuring such a system
+is outside the scope of this document however.</p>
+</div>
+<div class="section" id="hacking-on-err-s-code-directly">
+<h2>Hacking on Err&#8217;s code directly<a class="headerlink" href="#hacking-on-err-s-code-directly" title="Permalink to this headline">¶</a></h2>
+<p>It&#8217;s important to know that as of version 2.0, Err is written for Python 3. In order
+to run under Python 2.7 the code is run through 3to2 at install time. This means that
+while it is possible to run Err under Python 3.2+ directly from a source checkout, it
+is not possible to do so with Python 2.7. If you wish to develop or test with Err&#8217;s
+code under 2.7, you must run:</p>
+<div class="highlight-python"><pre>python setup.py install</pre>
+</div>
+<p>Alternatively, you can also look into the <cite>&#8211;editable</cite> parameter of pip install.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <a class="logo" href="../../" title="Back to home page">
+        <img class="logo" src="../../_static/err_speech.png" width="220" height="135" alt="Logo of Err" />
+    </a>
+  <h3><a href="../../">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Setup</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#extra-dependencies">Extra dependencies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#starting-the-daemon">Starting the daemon</a></li>
+<li><a class="reference internal" href="#hacking-on-err-s-code-directly">Hacking on Err&#8217;s code directly</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../">Homepage</a></li>
+    <li><a href="../../genindex/">Index</a></li>
+  <li><a href="../../py-modindex/">Module index</a></li>
+          <li>Previous: <a href="../../features/" title="previous chapter">Multiple server back-ends</a></li>
+          <li>Next: <a href="../interaction/" title="next chapter">Interacting with the Bot</a></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/user_guide/setup.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search/" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <script>
+    $(document).ready(function() {
+        $('.fancybox').fancybox({
+            padding : 0,
+            openEffect  : 'elastic'
+        });
+    });
+  </script>
+ <div class="relbar2">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../interaction/" title="Interacting with the Bot"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../features/" title="Multiple server back-ends"
+             >previous</a> |</li>
+        <li><a href="../../">Err 2.0.0-rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+ </div>
+  <div class="footer">
+    &copy; Copyright 2013, Guillaume Binet, Tali Davidovich Petrover and Nick Groenen.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

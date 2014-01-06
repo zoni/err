@@ -1,166 +1,284 @@
-<!DOCTYPE html>
-<html>
+
+<!doctype html>
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-    <link rel="shortcut icon" href="http://gbin.github.com/err/favicon.ico" />
-    <link href="https://plus.google.com/101905029512356212669" rel="publisher" />
-    <title>Err | XMPP and CampFire chatbot</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Err - the pluggable chatbot &mdash; Err 2.0.0-rc2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/err.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
-
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-32534172-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2.0.0-rc2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '',
+        HAS_SOURCE:  true
+      };
     </script>
-    <script type="text/javascript" src="javascripts/highslide/highslide.js"></script>
-    <link rel="stylesheet" type="text/css" href="javascripts/highslide/highslide.css" />
-    <script type="text/javascript">
-         hs.graphicsDir = 'javascripts/highslide/graphics/';
-     </script>
-     <link href="http://googleplus-activity-widget.googlecode.com/svn/v1/light.css" rel="stylesheet" type="text/css" />
-     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript"></script>
-     <script src="javascripts/jquery.googleplus-activity-1.0.min.js" type="text/javascript"></script>
-     <script type="text/javascript">
-         //<![CDATA[
-         jQuery.fn.googlePlusActivity.defaults.api_key = 'AIzaSyAKXi64lkJvAIHtTRf0WwQCGiw08gu8xsQ';
-         jQuery.fn.googlePlusActivity.defaults.user = '101905029512356212669';
-         jQuery.fn.googlePlusActivity.defaults.image_width = 100;
-         jQuery.fn.googlePlusActivity.defaults.show_profile = 0;
-         jQuery.fn.googlePlusActivity.defaults.body_height = 600;
-         jQuery.fn.googlePlusActivity.defaults.n = 5;
-         jQuery.fn.googlePlusActivity.defaults.rotate = 0;
-         //]]>
-     </script>
-     <script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script> 
-</head>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Err 2.0.0-rc2 documentation" href="#" />
+    <link rel="next" title="Multiple server back-ends" href="features/" />
+  <link rel="icon" type="image/png" href="_static/err.png" />
+  <link rel="apple-touch-icon" href="_static/err.png" />
+  <link rel="stylesheet" href="_static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="_static/fancybox/jquery.fancybox.pack.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32534172-1']);
+    _gaq.push(['_trackPageview']);
 
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+  </head>
   <body>
-    <header>
-       <div class="header-container">
-               <div style='float:right; margin-top:30px'>
-                   <iframe src="http://ghbtns.com/github-btn.html?user=gbin&repo=err&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110px" height="20px"></iframe><br/>
-                   <iframe src="http://ghbtns.com/github-btn.html?user=gbin&repo=err&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110px" height="20px"></iframe><br/>
-                   <g:plusone size="medium"></g:plusone>
-               </div>
-               <div style='float:right; margin-right:45px'>
-                   <h1> Err... </h1>
-               </div>
-               <div style='float:right; margin-right:20px'>
-                   <img style='vertical-align:top; width:auto; height:100px;' src='images/err.png'/>
-                   <img style='vertical-align:top; width:auto; height:100px;' src='images/speech.png'/>
-               </div>
+  
+  
+  <div class=indexwrapper>
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="features/" title="Multiple server back-ends"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">Err 2.0.0-rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="err-the-pluggable-chatbot">
+<h1>Err - the pluggable chatbot<a class="headerlink" href="#err-the-pluggable-chatbot" title="Permalink to this headline">¶</a></h1>
+<p><em>Err is a GPL3-licensed chat bot for XMPP and IRC networks, designed to be easily
+deployable, extensible and maintainable. Our goal is to make it easy for you to
+write your own plugins so you can make it do whatever you want.</em></p>
+<div class="section" id="simple-to-build-upon">
+<h2>Simple to build upon<a class="headerlink" href="#simple-to-build-upon" title="Permalink to this headline">¶</a></h2>
+<p>Extending Err and adding your own commands can be done by creating a plugin, which
+is merely a Python module containing a class derived from
+<a class="reference internal" href="api/#errbot.botplugin.BotPlugin" title="errbot.botplugin.BotPlugin"><tt class="xref py py-class docutils literal"><span class="pre">BotPlugin</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">errbot</span> <span class="kn">import</span> <span class="n">BotPlugin</span><span class="p">,</span> <span class="n">botcmd</span>
+
+<span class="k">class</span> <span class="nc">Hello</span><span class="p">(</span><span class="n">BotPlugin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Example &#39;Hello, world!&#39; plugin for Err&quot;&quot;&quot;</span>
+
+    <span class="nd">@botcmd</span>
+    <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Say hello to the world&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&quot;Hello, world!&quot;</span>
+</pre></div>
+</div>
+<p>By default, Err looks at your docstrings to automatically document commands for the
+built-in <a class="reference internal" href="user_guide/interaction/#builtin-help-function"><em>!help</em></a> command. It will use the class&#8217; docstring as the description of
+your plugin and use the method docstrings as documentation for the bot commands.</p>
+</div>
+<div class="section" id="batteries-included">
+<h2>Batteries included<a class="headerlink" href="#batteries-included" title="Permalink to this headline">¶</a></h2>
+<p>We aim to give you all the tools you need to build the bot you want, without
+having to worry about basic functionality. As such, Err comes with a wealth of
+features out of the box.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="features/">Multiple server back-ends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features/#core-features">Core features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features/#built-in-administration-and-security">Built-in administration and security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features/#extensive-plugin-framework">Extensive plugin framework</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="sharing">
+<h2>Sharing<a class="headerlink" href="#sharing" title="Permalink to this headline">¶</a></h2>
+<p>One of the principal goals of Err is to make it easy to not only create your own
+plugins with little effort, but to make it easy to share them with others as well.</p>
+<p>Err features a built-in <em>repositories command</em> (<cite>!repos</cite>) which can be used to
+install, uninstall and update plugins made available by the community. Making your
+plugin available through this command only requires you to publish it as a publicly
+available Git repository and letting us know the URL so we can add it.</p>
+<p>Currently, we&#8217;re also working on a web interface lightly inspired by Hubot&#8217;s
+<a class="reference external" href="http://hubot-script-catalog.herokuapp.com/">script catalog</a>, which should make
+this process even easier in the future.</p>
+</div>
+<div class="section" id="screenshots">
+<h2>Screenshots<a class="headerlink" href="#screenshots" title="Permalink to this headline">¶</a></h2>
+<div class="screenshots">
+    <a href="_static/screenshots/help.png" class="fancybox" title="Showing output of the built-in help command">
+        <img src="_static/screenshots/thumb_help.png" width="155" height="150" alt="Showing output of the built-in help command" />
+    </a>
+    <a href="_static/screenshots/quota.png" class="fancybox" title="Err running on HipChat, showing off a (businesss-specific) command to get and set the disk quotas for mail accounts">
+        <img src="_static/screenshots/thumb_quota.png" width="268" height= "150" alt="Err running on HipChat, showing off a (businesss-specific) command to get and set the disk quotas for mail accounts" />
+    </a>
+    <a href="_static/screenshots/basecamp.png" class="fancybox" title="An older version of Err, running on Basecamp">
+        <img src="_static/screenshots/thumb_basecamp.png" width="181" height= "150" alt="An older version of Err, running on Basecamp" />
+    </a>
+</div></div>
+<div class="section" id="community">
+<h2>Community<a class="headerlink" href="#community" title="Permalink to this headline">¶</a></h2>
+<p>Err has a <a class="reference external" href="https://plus.google.com/b/101905029512356212669/communities/117050256560830486288">Google plus community</a>, which is the best place to go for help and ask
+questions, discuss anything related to Err as well as promote your own creations.
+This is also the place where you will find announcements of new versions and other
+news related to the project.</p>
+<p>If you wish to get involved with development of Err itself, have a bug to report or
+wish to request a new feature, please go to the <a class="reference external" href="http://github.com/gbin/err/">GitHub page</a> instead.</p>
+</div>
+<div class="section" id="user-guide">
+<h2>User guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/setup/">Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/setup/#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/setup/#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/setup/#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/setup/#starting-the-daemon">Starting the daemon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/setup/#hacking-on-err-s-code-directly">Hacking on Err&#8217;s code directly</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/interaction/">Interacting with the Bot</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/interaction/#accessing-the-built-in-help-function">Accessing the built-in help function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/interaction/#managing-plugins">Managing plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/plugin_development/">Plugin development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/plugin_development/#tips-before-you-get-started">Tips before you get started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/plugin_development/#writing-a-simple-plugin">Writing a simple plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/plugin_development/#returning-multiple-responses">Returning multiple responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/plugin_development/#sending-a-message-to-a-specific-user-or-muc">Sending a message to a specific user or MUC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/plugin_development/#make-err-split-the-arguments-for-you">Make err split the arguments for you</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/plugin_development/#subcommands">Subcommands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/plugin_development/#version-checking">Version checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/plugin_development/#allow-the-admin-to-configure-your-plugin-from-the-chat">Allow the admin to configure your plugin from the chat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/plugin_development/#implementing-a-callback-to-listen-to-every-message-in-the-chatroom">Implementing a callback to listen to every message in the chatroom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/plugin_development/#make-the-bot-poll-for-a-specific-function">Make the bot poll for a specific function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/plugin_development/#specify-the-python-compatibility-of-a-plugin">Specify the python compatibility of a plugin</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/sentry/">Logging to Sentry</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/sentry/#come-again-just-what-is-sentry-exactly">Come again? Just what is Sentry, exactly?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/sentry/#setting-up-sentry-itself">Setting up Sentry itself</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/sentry/#configuring-err-to-use-sentry">Configuring Err to use Sentry</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>Err is free software, available under the GPL-3 license. Please refer to the
+<a class="reference download internal" href="_downloads/gpl-3.0.txt"><tt class="xref download docutils literal"><span class="pre">full</span> <span class="pre">license</span> <span class="pre">text</span></tt></a> for more details.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
       </div>
-    </header>
-    <div class="main-container">
-    <div class="container">
-      <section id="main_content">
-
-        <p><span class="err">Err</span> is a plugin based chatbot designed to be easily deployable, extensible and maintainable.</p>
-        <p>It allows you to start scripts interactively from your chatrooms for any reason: random humour, starting a build, monitoring commits, triggering alerts ...</p>
-        <p>You can look at <a href="http://github.com/gbin/err/wiki/Catalog">the already not up to date catalog</a> to get an idea of the current contributions.</p>
-        <p>It is really easy to add your own features.</p>
-        <p>It is <span class="err">open source</span> under the GPL3 license.</p>
-
-<h2>Requirements</h2>
-<p>It is written in Python 2.7+ and runs under Linux / Windows and MacOS.
-Note: Only linux is really tested daily.</p>
-
-<h2>Screenshots</h2>
-<p>
-<a href="images/screenshot2.png" class="highslide" onclick="return hs.expand(this)">
-    <img src="images/screenshot2_thumb.png" alt="Highslide JS" title="Click to enlarge"/>
-</a>
-<a href="images/screenshot1.png" class="highslide" onclick="return hs.expand(this)">
-    <img src="images/screenshot1_thumb.png" alt="Highslide JS" title="Click to enlarge"/>
-</a>
-</p>
-
-<h2>Features</h2>
-
-<h3>Backends</h3>
-<ul>
-    <li>XMPP : Tested with hipchat, openfire and Jabber but should be compatible with any standard XMPP servers.</li>
-    <li>CampFire support</li>
-    <li>IRC support</li>
-    <li>Supports MUCs (chatrooms)</li>
-    <li>Local Graphical Console (for testing/dev)</li>
-    <li>Local Text Console (for testing/dev)</li>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <a class="logo" href="#" title="Back to home page">
+        <img class="logo" src="_static/err_speech.png" width="220" height="135" alt="Logo of Err" />
+    </a>
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Err - the pluggable chatbot</a><ul>
+<li><a class="reference internal" href="#simple-to-build-upon">Simple to build upon</a></li>
+<li><a class="reference internal" href="#batteries-included">Batteries included</a><ul>
 </ul>
-
-<h3>Included</h3>
-<ul>
-    <li>an <span class="err">!help</span> command that generates dynamically the documentation from the python docstrings of the commands</li>
-    <li>A <span class="err">command history</span> system where the users can recall a previous command</li>
-    <li>Can <span class="err">proxy</span> and route one 2 one messages to MUC so it can enable simpler XMPP notifiers to be MUC compatible (for example the jira XMPP notifier).</li>
+</li>
+<li><a class="reference internal" href="#sharing">Sharing</a></li>
+<li><a class="reference internal" href="#screenshots">Screenshots</a></li>
+<li><a class="reference internal" href="#community">Community</a></li>
+<li><a class="reference internal" href="#user-guide">User guide</a><ul>
 </ul>
-
-<h3>Administration and Security</h3>
-<ul>
-    <li>Can be setup so a restricted list of persons have the <span class="err">administration rights</span></li>
-    <li>Dynamic plugin architecture : the bot admin can <span class="err">install</span>/uninstall/update/enable/disable plugins dynamically <span class="err">just by chatting with the bot</span>.</li>
-    <li>Plugins can be hosted publicly or privately <span class="err">on git</span></li>
-    <li>Plugins can be <span class="err">configured just by chatting with the bot </span>(no need to change setup files for every plugin)</li>
-    <li>Configs can be exported and reimported (!export)</li>
-    <li>Technical logs can be inspected just by chatting with the chat</li>
+</li>
+<li><a class="reference internal" href="#license">License</a></li>
 </ul>
-
-<h3>Provides for Extensibility</h3>
-<ul>
-    <li>a <span class="err">smooth learning curve</span> for you to write your first plugin within minutes (see example below)</li>
-    <li><span class="err">test consoles</span> for superfast development roundtrips</li>
-    <li>a support for subcommands</li>
-    <li>an <span class="err">automatic persistance</span> store per plugin</li>
-    <li>a really simple <span class="err">webhooks</span> integration</li>
-    <li>a polling framework for the plugins</li>
-    <li>an easy configuration framework</li>
-    <li>a <span class="err">templating framework</span> to display fancy HTML messages</li>
+</li>
 </ul>
-
-<p>More details about its features can be found on the <a href="https://github.com/gbin/err/wiki/">wiki</a></p>
-
-
-<h2> Try it now </h2>
-<p>Choose a nickname and type <b>!help</b> to get a list of available commands</p>
-<p>Example of commands you can play with:</p>
+<h3>Related Topics</h3>
 <ul>
-    <li>!showme mr bean</li>
-    <li>!animals</li>
-    <li>!shout hello</li>
-    <li>!fp</li>
-    <li>!battle obama vs romney</li>
-    <li>!tv season 3 walking dead</li>
-    <li>!tv next breaking bad</li>
+  <li><a href="#">Homepage</a></li>
+    <li><a href="genindex/">Index</a></li>
+  <li><a href="py-modindex/">Module index</a></li>
+          <li>Next: <a href="features/" title="next chapter">Multiple server back-ends</a></li>
 </ul>
-<iframe src="http://www.gootz.net:3141/chat.html" frameborder = "0" scrolling="no" width="800" height="450" ></iframe>
-
-<p>Or Head to the <a href="https://github.com/gbin/err">main github page</a> and follow the installation instructions if you want to try a private instance.</p>
-
-<h2> Extend it </h2>
-
-<p>Head to <a href="http://github.com/gbin/err/wiki/plugin-dev">the plugin dev tutorial</a> to see how it is easy to extend it</p>
-
-<h2> Background </h2>
-
-<p>At Mondial Telecom (<a href="http://www.mondialtelecom.eu">http://www.mondialtelecom.eu</a>), we needed a chat bot over XMPP so it can reach the non techie audience of the company.
-We liked it so much and we started to write so much features that we decided to make a more modular bot framework and share it.</p>
-
-
-      </section>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search/" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
     </div>
-    <div class= "side-container">
-        <a href="https://plus.google.com/101905029512356212669" rel="publisher"><h2>Latest News !</h2></a><br/>
-        <div class="google-plus-activity"/>
+  <script>
+    $(document).ready(function() {
+        $('.fancybox').fancybox({
+            padding : 0,
+            openEffect  : 'elastic'
+        });
+    });
+  </script>
+ <div class="relbar2">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="features/" title="Multiple server back-ends"
+             >next</a> |</li>
+        <li><a href="#">Err 2.0.0-rc2 documentation</a> &raquo;</li> 
+      </ul>
     </div>
-  </div>  
+ </div>
+  <div class="footer">
+    &copy; Copyright 2013, Guillaume Binet, Tali Davidovich Petrover and Nick Groenen.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </div>
+  
   </body>
 </html>

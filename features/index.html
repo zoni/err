@@ -1,0 +1,212 @@
+
+<!doctype html>
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Multiple server back-ends &mdash; Err 2.0.0-rc2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/err.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.0-rc2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Err 2.0.0-rc2 documentation" href="../" />
+    <link rel="next" title="Setup" href="../user_guide/setup/" />
+    <link rel="prev" title="Err - the pluggable chatbot" href="../" />
+  <link rel="icon" type="image/png" href="../_static/err.png" />
+  <link rel="apple-touch-icon" href="../_static/err.png" />
+  <link rel="stylesheet" href="../_static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="../_static/fancybox/jquery.fancybox.pack.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32534172-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../user_guide/setup/" title="Setup"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../" title="Err - the pluggable chatbot"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../">Err 2.0.0-rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="multiple-server-back-ends">
+<h1>Multiple server back-ends<a class="headerlink" href="#multiple-server-back-ends" title="Permalink to this headline">¶</a></h1>
+<p>Err has support for a number of different networks, and is architectured in a way
+that makes it relatively easy to write new back-ends in order to support more.
+Currently, the following networks are supported:</p>
+<blockquote>
+<div><ul class="simple">
+<li>XMPP <em>(Any standards-compliant XMPP/Jabber server should work - Google Talk/Hangouts included)</em></li>
+<li><a class="reference external" href="https://campfirenow.com/">CampFire</a></li>
+<li><a class="reference external" href="https://www.hipchat.com/">Hipchat</a></li>
+<li>IRC</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="core-features">
+<h1>Core features<a class="headerlink" href="#core-features" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Multi User Chatroom (MUC) support</li>
+<li>A dynamic plugin architecture: Bot admins can install/uninstall/update/enable/disable plugins dynamically just by chatting with the bot</li>
+<li>Advanced security/access control features (see below)</li>
+<li>A <cite>!help</cite> command that dynamically generates documentation for commands using the docstrings in the plugin source code</li>
+<li>A per-user command history system where users can recall previous commands</li>
+<li>The ability to proxy and route one-to-one messages to MUC so it can enable simpler XMPP notifiers to be MUC compatible (for example the Jira XMPP notifier)</li>
+</ul>
+</div>
+<div class="section" id="built-in-administration-and-security">
+<h1>Built-in administration and security<a class="headerlink" href="#built-in-administration-and-security" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Can be setup so a restricted list of people have administrative rights</li>
+<li>Fine-grained access controls may be defined which allow all or just specific commands to be limited to specific users and/or rooms</li>
+<li>Plugins may be hosted publicly or privately and dynamically installed (by admins) via their Git url</li>
+<li>Plugins can be configured directly from chat (no need to change setup files for every plugin)</li>
+<li>Configs can be exported and imported again with two commands (!export and !import respectively)</li>
+<li>Technical logs can be logged to file, inspected from the chat or optionally
+<a class="reference internal" href="../user_guide/sentry/"><em>logged to Sentry</em></a></li>
+</ul>
+</div>
+<div class="section" id="extensive-plugin-framework">
+<h1>Extensive plugin framework<a class="headerlink" href="#extensive-plugin-framework" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Hooks and callbacks for various types of events, such as
+<a class="reference internal" href="../api/#errbot.botplugin.BotPlugin.callback_connect" title="errbot.botplugin.BotPlugin.callback_connect"><tt class="xref py py-func docutils literal"><span class="pre">callback_connect()</span></tt></a> for when the bot has connected
+or <a class="reference internal" href="../api/#errbot.botplugin.BotPlugin.callback_message" title="errbot.botplugin.BotPlugin.callback_message"><tt class="xref py py-func docutils literal"><span class="pre">callback_message()</span></tt></a> for when a message is received.</li>
+<li>Local text and graphical consoles for easy testing and development</li>
+<li>Plugins get out of the box support for subcommands</li>
+<li>We provide an automatic persistence store per plugin</li>
+<li>There&#8217;s really simple webhooks integration</li>
+<li>As well as a polling framework for plugins</li>
+<li>An easy configuration framework</li>
+<li>A test backend for unittests for plugins which can make assertions about issued commands and their responses</li>
+<li>And a templating framework to display fancy HTML messages. Automatic conversion from HTML to plaintext when the backend doesn&#8217;t support HTML means you don&#8217;t have to make seperate text and HTML versions of your command output yourself</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <a class="logo" href="../" title="Back to home page">
+        <img class="logo" src="../_static/err_speech.png" width="220" height="135" alt="Logo of Err" />
+    </a>
+  <h3><a href="../">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Multiple server back-ends</a></li>
+<li><a class="reference internal" href="#core-features">Core features</a></li>
+<li><a class="reference internal" href="#built-in-administration-and-security">Built-in administration and security</a></li>
+<li><a class="reference internal" href="#extensive-plugin-framework">Extensive plugin framework</a></li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../">Homepage</a></li>
+    <li><a href="../genindex/">Index</a></li>
+  <li><a href="../py-modindex/">Module index</a></li>
+          <li>Previous: <a href="../" title="previous chapter">Err - the pluggable chatbot</a></li>
+          <li>Next: <a href="../user_guide/setup/" title="next chapter">Setup</a></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/features.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <script>
+    $(document).ready(function() {
+        $('.fancybox').fancybox({
+            padding : 0,
+            openEffect  : 'elastic'
+        });
+    });
+  </script>
+ <div class="relbar2">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../user_guide/setup/" title="Setup"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../" title="Err - the pluggable chatbot"
+             >previous</a> |</li>
+        <li><a href="../">Err 2.0.0-rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+ </div>
+  <div class="footer">
+    &copy; Copyright 2013, Guillaume Binet, Tali Davidovich Petrover and Nick Groenen.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

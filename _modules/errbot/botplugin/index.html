@@ -1,0 +1,378 @@
+
+<!doctype html>
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>errbot.botplugin &mdash; Err 2.0.0-rc2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/err.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.0-rc2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Err 2.0.0-rc2 documentation" href="../../../" />
+    <link rel="up" title="errbot" href="../" />
+  <link rel="icon" type="image/png" href="../../../_static/err.png" />
+  <link rel="apple-touch-icon" href="../../../_static/err.png" />
+  <link rel="stylesheet" href="../../../_static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="../../../_static/fancybox/jquery.fancybox.pack.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32534172-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../">Err 2.0.0-rc2 documentation</a> &raquo;</li>
+          <li><a href="../../" >Module code</a> &raquo;</li>
+          <li><a href="../" accesskey="U">errbot</a> &raquo;</li> 
+      </ul>
+    </div>
+    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for errbot.botplugin</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Timer</span><span class="p">,</span> <span class="n">current_thread</span>
+<span class="kn">from</span> <span class="nn">errbot.utils</span> <span class="kn">import</span> <span class="n">PLUGINS_SUBDIR</span><span class="p">,</span> <span class="n">recurse_check_structure</span>
+<span class="kn">from</span> <span class="nn">errbot.storage</span> <span class="kn">import</span> <span class="n">StoreMixin</span>
+<span class="kn">from</span> <span class="nn">errbot</span> <span class="kn">import</span> <span class="n">holder</span>
+
+
+
+<div class="viewcode-block" id="BotPluginBase"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPluginBase">[docs]</a><span class="k">class</span> <span class="nc">BotPluginBase</span><span class="p">(</span><span class="n">StoreMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">     This class handle the basic needs of bot plugins like loading, unloading and creating a storage</span>
+<span class="sd">     It is the main contract between the plugins and the bot</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plugin_dir</span> <span class="o">=</span> <span class="n">holder</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">plugin_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_activated</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_pollers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_timers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BotPluginBase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="BotPluginBase.activate"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPluginBase.activate">[docs]</a>    <span class="k">def</span> <span class="nf">activate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Override if you want to do something at initialization phase (don&#39;t forget to super(Gnagna, self).activate())</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">BOT_DATA_DIR</span>
+
+        <span class="n">classname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Init storage for </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">classname</span><span class="p">)</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">BOT_DATA_DIR</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">PLUGINS_SUBDIR</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">classname</span> <span class="o">+</span> <span class="s">&#39;.db&#39;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Loading </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open_storage</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">holder</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">inject_commands_from</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_activated</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="BotPluginBase.deactivate"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPluginBase.deactivate">[docs]</a>    <span class="k">def</span> <span class="nf">deactivate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Override if you want to do something at tear down phase (don&#39;t forget to super(Gnagna, self).deactivate())</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pollers</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;You still have active pollers at deactivation stage, I cleaned them up for you.&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_pollers</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">timer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_timers</span><span class="p">:</span>
+                <span class="n">timer</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">close_storage</span><span class="p">()</span>
+        <span class="n">holder</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">remove_commands_from</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_activated</span> <span class="o">=</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="BotPluginBase.start_poller"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPluginBase.start_poller">[docs]</a>    <span class="k">def</span> <span class="nf">start_poller</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Programming the polling of </span><span class="si">%s</span><span class="s"> every </span><span class="si">%i</span><span class="s"> seconds with args </span><span class="si">%s</span><span class="s"> and kwargs </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">method</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)))</span>
+        <span class="c">#noinspection PyBroadException</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_pollers</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">program_next_poll</span><span class="p">(</span><span class="n">interval</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">_</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;failed&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="BotPluginBase.stop_poller"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPluginBase.stop_poller">[docs]</a>    <span class="k">def</span> <span class="nf">stop_poller</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Stop polling of </span><span class="si">%s</span><span class="s"> with args </span><span class="si">%s</span><span class="s"> and kwargs </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_pollers</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="BotPluginBase.program_next_poll"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPluginBase.program_next_poll">[docs]</a>    <span class="k">def</span> <span class="nf">program_next_poll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="n">interval</span><span class="p">,</span> <span class="n">function</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">poller</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;interval&#39;</span><span class="p">:</span> <span class="n">interval</span><span class="p">,</span> <span class="s">&#39;method&#39;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span> <span class="s">&#39;args&#39;</span><span class="p">:</span> <span class="n">args</span><span class="p">,</span> <span class="s">&#39;kwargs&#39;</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_timers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>  <span class="c"># save the timer to be able to kill it</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">setName</span><span class="p">(</span><span class="s">&#39;Poller thread for </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">method</span><span class="o">.</span><span class="n">__self__</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>  <span class="c"># so it is not locking on exit</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="BotPluginBase.poller"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPluginBase.poller">[docs]</a>    <span class="k">def</span> <span class="nf">poller</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">previous_timer</span> <span class="o">=</span> <span class="n">current_thread</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">previous_timer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_timers</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Previous timer found and removed&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_timers</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">previous_timer</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pollers</span><span class="p">:</span>
+            <span class="c">#noinspection PyBroadException</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">_</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;A poller crashed&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">program_next_poll</span><span class="p">(</span><span class="n">interval</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="BotPlugin"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin">[docs]</a><span class="k">class</span> <span class="nc">BotPlugin</span><span class="p">(</span><span class="n">BotPluginBase</span><span class="p">):</span>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="BotPlugin.min_err_version"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.min_err_version">[docs]</a>    <span class="k">def</span> <span class="nf">min_err_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; If your plugin has a minimum version of err it needs to be on in order to run, please override accordingly this method.</span>
+<span class="sd">        returning a string with the dotted minimum version. it MUST be in a 3 dotted numbers format or None</span>
+<span class="sd">        for example: &quot;1.2.2&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="BotPlugin.max_err_version"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.max_err_version">[docs]</a>    <span class="k">def</span> <span class="nf">max_err_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; If your plugin has a maximal version of err it needs to be on in order to run, please override accordingly this method.</span>
+<span class="sd">        returning a string with the dotted maximal version. it MUST be in a 3 dotted numbers format or None</span>
+<span class="sd">        for example: &quot;1.2.2&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="BotPlugin.get_configuration_template"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.get_configuration_template">[docs]</a>    <span class="k">def</span> <span class="nf">get_configuration_template</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; If your plugin needs a configuration, override this method and return a configuration template.</span>
+<span class="sd">        for example a dictionary like:</span>
+<span class="sd">        return {&#39;LOGIN&#39; : &#39;example@example.com&#39;, &#39;PASSWORD&#39; : &#39;password&#39;}</span>
+<span class="sd">        Note : if this method returns None, the plugin won&#39;t be configured</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="BotPlugin.check_configuration"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.check_configuration">[docs]</a>    <span class="k">def</span> <span class="nf">check_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; By default, this method will do only a BASIC check. You need to override it if you want to do more complex checks.</span>
+<span class="sd">        It will be called before the configure callback. Note if the config_template is None, it will never be called</span>
+<span class="sd">        It means recusively:</span>
+<span class="sd">        1. in case of a dictionary, it will check if all the entries and from the same type are there and not more</span>
+<span class="sd">        2. in case of an array or tuple, it will assume array members of the same type of first element of the template (no mix typed is supported)</span>
+
+<span class="sd">        In case of validation error it should raise a errbot.utils.ValidationException</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">recurse_check_structure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_configuration_template</span><span class="p">(),</span> <span class="n">configuration</span><span class="p">)</span>  <span class="c"># default behavior</span>
+</div>
+<div class="viewcode-block" id="BotPlugin.configure"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.configure">[docs]</a>    <span class="k">def</span> <span class="nf">configure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; By default, it will just store the current configuation in the self.config field of your plugin</span>
+<span class="sd">        If this plugin has no configuration yet, the framework will call this function anyway with None</span>
+<span class="sd">        This method will be called before activation so don&#39;t expect to be activated at that point</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">configuration</span>
+</div>
+<div class="viewcode-block" id="BotPlugin.activate"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.activate">[docs]</a>    <span class="k">def</span> <span class="nf">activate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Override if you want to do something at initialization phase (don&#39;t forget to super(Gnagna, self).activate())</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BotPlugin</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="BotPlugin.deactivate"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.deactivate">[docs]</a>    <span class="k">def</span> <span class="nf">deactivate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Override if you want to do something at tear down phase (don&#39;t forget to super(Gnagna, self).deactivate())</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BotPlugin</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">deactivate</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="BotPlugin.callback_connect"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.callback_connect">[docs]</a>    <span class="k">def</span> <span class="nf">callback_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Override to get a notified when the bot is connected</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="BotPlugin.callback_message"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.callback_message">[docs]</a>    <span class="k">def</span> <span class="nf">callback_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">mess</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Override to get a notified on *ANY* message.</span>
+<span class="sd">            If you are interested only by chatting message you can filter for example mess.getType() in (&#39;groupchat&#39;, &#39;chat&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="BotPlugin.callback_botmessage"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.callback_botmessage">[docs]</a>    <span class="k">def</span> <span class="nf">callback_botmessage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mess</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Override to get a notified on messages from the bot itself (emitted from your plugin sisters and brothers for example).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="c"># Proxyfy some useful tools from the motherbot</span>
+    <span class="c"># this is basically the contract between the plugins and the main bot</span>
+</div>
+<div class="viewcode-block" id="BotPlugin.warn_admins"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.warn_admins">[docs]</a>    <span class="k">def</span> <span class="nf">warn_admins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">warning</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Sends a warning to the administrators of the bot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">holder</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">warn_admins</span><span class="p">(</span><span class="n">warning</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="BotPlugin.send"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.send">[docs]</a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">in_reply_to</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">message_type</span><span class="o">=</span><span class="s">&#39;chat&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Sends asynchronously a message a room or a user.</span>
+<span class="sd">             if it is a room message_type needs to by &#39;groupchat&#39; and user the room.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">holder</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">in_reply_to</span><span class="p">,</span> <span class="n">message_type</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="BotPlugin.bare_send"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.bare_send">[docs]</a>    <span class="k">def</span> <span class="nf">bare_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xmppy_msg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            A bypass to send directly a crafted xmppy message.</span>
+<span class="sd">              Usefull to extend to bot in not forseen ways.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">holder</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">c</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">c</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">xmppy_msg</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Ignored a message as the bot is not connected yet&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>  <span class="c"># the bot is not connected yet</span>
+</div>
+<div class="viewcode-block" id="BotPlugin.join_room"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.join_room">[docs]</a>    <span class="k">def</span> <span class="nf">join_room</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">room</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Make the bot join a room</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">holder</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">join_room</span><span class="p">(</span><span class="n">room</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="BotPlugin.invite_in_room"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.invite_in_room">[docs]</a>    <span class="k">def</span> <span class="nf">invite_in_room</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">room</span><span class="p">,</span> <span class="n">jids_to_invite</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Make the bot invite a list of jids to a room</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">holder</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">invite_in_room</span><span class="p">(</span><span class="n">room</span><span class="p">,</span> <span class="n">jids_to_invite</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="BotPlugin.get_installed_plugin_repos"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.get_installed_plugin_repos">[docs]</a>    <span class="k">def</span> <span class="nf">get_installed_plugin_repos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Get the current installed plugin repos in a dictionary of name / url</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">holder</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">get_installed_plugin_repos</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="BotPlugin.start_poller"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.start_poller">[docs]</a>    <span class="k">def</span> <span class="nf">start_poller</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Start to poll a method at specific interval in seconds.</span>
+<span class="sd">            Note : it will call the method with the initial interval delay for the first time</span>
+<span class="sd">            Also, you can program</span>
+<span class="sd">            for example : self.program_poller(self,30, fetch_stuff)</span>
+<span class="sd">            where you have def fetch_stuff(self) in your plugin</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BotPlugin</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">start_poller</span><span class="p">(</span><span class="n">interval</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="BotPlugin.stop_poller"><a class="viewcode-back" href="../../../api/#errbot.botplugin.BotPlugin.stop_poller">[docs]</a>    <span class="k">def</span> <span class="nf">stop_poller</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            stop poller(s).</span>
+<span class="sd">            if the method equals None -&gt; it stops all the pollers</span>
+<span class="sd">            you need to regive the same parameters as the original start_poller to match a specific poller to stop</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BotPlugin</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">stop_poller</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <a class="logo" href="../../../" title="Back to home page">
+        <img class="logo" src="../../../_static/err_speech.png" width="220" height="135" alt="Logo of Err" />
+    </a><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../">Homepage</a></li>
+    <li><a href="../../../genindex/">Index</a></li>
+  <li><a href="../../../py-modindex/">Module index</a></li>
+      <li>
+          <a href="../../">Module code</a>
+          <ul>
+      <li>
+          <a href="../">errbot</a>
+          <ul>
+          </ul>
+      </li>
+          </ul>
+      </li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search/" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <script>
+    $(document).ready(function() {
+        $('.fancybox').fancybox({
+            padding : 0,
+            openEffect  : 'elastic'
+        });
+    });
+  </script>
+ <div class="relbar2">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../">Err 2.0.0-rc2 documentation</a> &raquo;</li>
+          <li><a href="../../" >Module code</a> &raquo;</li>
+          <li><a href="../" >errbot</a> &raquo;</li> 
+      </ul>
+    </div>
+ </div>
+  <div class="footer">
+    &copy; Copyright 2013, Guillaume Binet, Tali Davidovich Petrover and Nick Groenen.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

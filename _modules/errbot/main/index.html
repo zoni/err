@@ -1,0 +1,195 @@
+
+<!doctype html>
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>errbot.main &mdash; Err 2.0.0-rc2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/err.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.0-rc2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Err 2.0.0-rc2 documentation" href="../../../" />
+    <link rel="up" title="errbot" href="../" />
+  <link rel="icon" type="image/png" href="../../../_static/err.png" />
+  <link rel="apple-touch-icon" href="../../../_static/err.png" />
+  <link rel="stylesheet" href="../../../_static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="../../../_static/fancybox/jquery.fancybox.pack.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32534172-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../">Err 2.0.0-rc2 documentation</a> &raquo;</li>
+          <li><a href="../../" >Module code</a> &raquo;</li>
+          <li><a href="../" accesskey="U">errbot</a> &raquo;</li> 
+      </ul>
+    </div>
+    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for errbot.main</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">access</span><span class="p">,</span> <span class="n">makedirs</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">getcwd</span><span class="p">,</span> <span class="n">W_OK</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../api/#errbot.main.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">bot_class</span><span class="p">,</span> <span class="n">logger</span><span class="p">):</span>
+    <span class="c"># from here the environment is supposed to be set (daemon / non daemon,</span>
+    <span class="c"># config.py in the python path )</span>
+
+    <span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">BOT_IDENTITY</span><span class="p">,</span> <span class="n">BOT_LOG_LEVEL</span><span class="p">,</span> <span class="n">BOT_DATA_DIR</span><span class="p">,</span> <span class="n">BOT_LOG_FILE</span><span class="p">,</span> <span class="n">BOT_LOG_SENTRY</span>
+    <span class="kn">from</span> <span class="nn">errbot.utils</span> <span class="kn">import</span> <span class="n">PLUGINS_SUBDIR</span>
+    <span class="kn">from</span> <span class="nn">errbot</span> <span class="kn">import</span> <span class="n">holder</span>
+
+    <span class="k">if</span> <span class="n">BOT_LOG_FILE</span><span class="p">:</span>
+        <span class="n">hdlr</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="n">BOT_LOG_FILE</span><span class="p">)</span>
+        <span class="n">hdlr</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s"> </span><span class="si">%(levelname)s</span><span class="s"> </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">hdlr</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">BOT_LOG_LEVEL</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">BOT_LOG_SENTRY</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">raven.handlers.logging</span> <span class="kn">import</span> <span class="n">SentryHandler</span>
+        <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">_</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&quot;&quot;&quot;You have BOT_LOG_SENTRY enabled, but I couldn&#39;t import modules needed for Sentry integration.</span>
+<span class="s">            Did you install raven? (See http://raven.readthedocs.org/en/latest/install/index.html for installation instructions)</span>
+
+<span class="s">            &quot;&quot;&quot;</span><span class="p">)</span>
+            <span class="nb">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">SENTRY_DSN</span><span class="p">,</span> <span class="n">SENTRY_LOGLEVEL</span>
+
+        <span class="n">sentryhandler</span> <span class="o">=</span> <span class="n">SentryHandler</span><span class="p">(</span><span class="n">SENTRY_DSN</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">SENTRY_LOGLEVEL</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">sentryhandler</span><span class="p">)</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">BOT_DATA_DIR</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;The data directory </span><span class="si">%s</span><span class="s"> for the bot does not exist&#39;</span> <span class="o">%</span> <span class="n">BOT_DATA_DIR</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">access</span><span class="p">(</span><span class="n">BOT_DATA_DIR</span><span class="p">,</span> <span class="n">W_OK</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;The data directory </span><span class="si">%s</span><span class="s"> should be writable for the bot&#39;</span> <span class="o">%</span> <span class="n">BOT_DATA_DIR</span><span class="p">)</span>
+
+    <span class="c"># make the plugins subdir to store the plugin shelves</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">BOT_DATA_DIR</span> <span class="o">+</span> <span class="n">sep</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">PLUGINS_SUBDIR</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="n">makedirs</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="n">o755</span><span class="p">)</span>
+
+    <span class="n">holder</span><span class="o">.</span><span class="n">bot</span> <span class="o">=</span> <span class="n">bot_class</span><span class="p">(</span><span class="o">**</span><span class="n">BOT_IDENTITY</span><span class="p">)</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">holder</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">update_dynamic_plugins</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Some plugins failed to load:</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">errors</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;serve from </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">holder</span><span class="o">.</span><span class="n">bot</span><span class="p">)</span>
+    <span class="n">holder</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <a class="logo" href="../../../" title="Back to home page">
+        <img class="logo" src="../../../_static/err_speech.png" width="220" height="135" alt="Logo of Err" />
+    </a><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../">Homepage</a></li>
+    <li><a href="../../../genindex/">Index</a></li>
+  <li><a href="../../../py-modindex/">Module index</a></li>
+      <li>
+          <a href="../../">Module code</a>
+          <ul>
+      <li>
+          <a href="../">errbot</a>
+          <ul>
+          </ul>
+      </li>
+          </ul>
+      </li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search/" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <script>
+    $(document).ready(function() {
+        $('.fancybox').fancybox({
+            padding : 0,
+            openEffect  : 'elastic'
+        });
+    });
+  </script>
+ <div class="relbar2">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../">Err 2.0.0-rc2 documentation</a> &raquo;</li>
+          <li><a href="../../" >Module code</a> &raquo;</li>
+          <li><a href="../" >errbot</a> &raquo;</li> 
+      </ul>
+    </div>
+ </div>
+  <div class="footer">
+    &copy; Copyright 2013, Guillaume Binet, Tali Davidovich Petrover and Nick Groenen.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

@@ -1,0 +1,472 @@
+
+<!doctype html>
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Plugin development &mdash; Err 2.0.0-rc2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/err.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.0-rc2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Err 2.0.0-rc2 documentation" href="../../" />
+    <link rel="next" title="Logging to Sentry" href="../sentry/" />
+    <link rel="prev" title="Interacting with the Bot" href="../interaction/" />
+  <link rel="icon" type="image/png" href="../../_static/err.png" />
+  <link rel="apple-touch-icon" href="../../_static/err.png" />
+  <link rel="stylesheet" href="../../_static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="../../_static/fancybox/jquery.fancybox.pack.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32534172-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../sentry/" title="Logging to Sentry"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../interaction/" title="Interacting with the Bot"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../">Err 2.0.0-rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="plugin-development">
+<h1>Plugin development<a class="headerlink" href="#plugin-development" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These docs are mostly a direct copy of the
+<a class="reference external" href="https://github.com/gbin/err/wiki/plugin-dev/">old documentation</a> up
+on the wiki. A new guide is being worked on, but isn&#8217;t complete enough
+yet to be published at this time.</p>
+</div>
+<div class="section" id="tips-before-you-get-started">
+<h2>Tips before you get started<a class="headerlink" href="#tips-before-you-get-started" title="Permalink to this headline">¶</a></h2>
+<p>Before you get started, you may want to check out the next few tips which can help
+you set up a more effective development environment/workflow. None of this is
+required though, so please feel free to skip ahead.</p>
+<div class="section" id="add-a-development-directory-in-the-plugin-searchpath">
+<h3>Add a development directory in the plugin searchpath<a class="headerlink" href="#add-a-development-directory-in-the-plugin-searchpath" title="Permalink to this headline">¶</a></h3>
+<p>Make a directory to host your new plugin or plugins and set it in config.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">BOT_EXTRA_PLUGIN_DIR</span> <span class="o">=</span> <span class="s">&#39;/home/path/to/plugin/root&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-the-bot-in-test-mode-optional-but-it-helps">
+<h3>Start the bot in test mode (optional but it helps)<a class="headerlink" href="#start-the-bot-in-test-mode-optional-but-it-helps" title="Permalink to this headline">¶</a></h3>
+<p>You can start the bot with the &#8220;-T&#8221; command line parameter.
+It runs the bot in test mode, a kind of single user mode on pure console (no XMPP server involved here).</p>
+<p>It will prompt you:</p>
+<div class="highlight-python"><pre>$ err.py -T
+[...]
+INFO:Plugin activation done.
+Talk to  me &gt;&gt; _</pre>
+</div>
+<p>Then you can enter all the available commands and it will trust you as an admin.
+Combine it with the debug mode of an IDE and you have a super snappy environment to try out and debug your code.</p>
+</div>
+<div class="section" id="use-our-plugin-skeleton">
+<h3>Use our plugin skeleton<a class="headerlink" href="#use-our-plugin-skeleton" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;ve written a <a class="reference external" href="https://github.com/zoni/err-skeleton">minimal plugin</a> which shows
+the basic layout of a simple plugin. Save yourself some time by using this template
+as a starting point.</p>
+</div>
+</div>
+<div class="section" id="writing-a-simple-plugin">
+<h2>Writing a simple plugin<a class="headerlink" href="#writing-a-simple-plugin" title="Permalink to this headline">¶</a></h2>
+<p>Let say you want to make an helloWorld plugin.
+First define a class implementing <a class="reference internal" href="../../api/#errbot.botplugin.BotPlugin" title="errbot.botplugin.BotPlugin"><tt class="xref py py-class docutils literal"><span class="pre">BotPlugin</span></tt></a> with a method
+decorated by <cite>&#64;botcmd</cite> as follows (save this file as <em>helloworld.py</em>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">errbot</span> <span class="kn">import</span> <span class="n">BotPlugin</span><span class="p">,</span> <span class="n">botcmd</span>
+
+<span class="k">class</span> <span class="nc">Hello</span><span class="p">(</span><span class="n">BotPlugin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Example &#39;Hello, world!&#39; plugin for Err&quot;&quot;&quot;</span>
+
+    <span class="nd">@botcmd</span>
+    <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Say hello to the world&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&quot;Hello, world!&quot;</span>
+</pre></div>
+</div>
+<p>Then you need to put some metadescription in a <em>.plug</em> file. Save the next file as
+<em>helloworld.plug</em>:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span class="k">[Core]</span>
+<span class="na">Name</span> <span class="o">=</span> <span class="s">HelloWorld</span>
+<span class="na">Module</span> <span class="o">=</span> <span class="s">helloWorld</span>
+
+<span class="k">[Documentation]</span>
+<span class="na">Description</span> <span class="o">=</span> <span class="s">let&#39;s say hello !</span>
+</pre></div>
+</div>
+<p>Start the bot or restart it if it is already live with the command <cite>!restart</cite>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Module must match the name of the python module your main class is</p>
+</div>
+<p>That&#8217;s it!
+You can check if the plugin correctly load with the <strong>!status</strong> command.
+Then you can check if the hello command is correctly bound with <strong>!help</strong>.
+Then you can try it: <strong>!hello</strong></p>
+<p>If something goes wrong to can inspect the last lines of the log instantly with <strong>!log tail</strong></p>
+</div>
+<div class="section" id="returning-multiple-responses">
+<h2>Returning multiple responses<a class="headerlink" href="#returning-multiple-responses" title="Permalink to this headline">¶</a></h2>
+<p>Often, with commands that take a long time to run, you may want to be able to send
+some feedback to the user that the command is progressing. Instead of using a single
+<cite>return</cite> statement you can use <cite>yield</cite> statements for every line of output you wish
+to send to the user.</p>
+<p>For example, in the following example, the output will be &#8220;Going to sleep&#8221;, followed
+by a 10 second wait, followed by &#8220;Waking up&#8221;.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">errbot</span> <span class="kn">import</span> <span class="n">BotPlugin</span><span class="p">,</span> <span class="n">botcmd</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+
+<span class="k">class</span> <span class="nc">PluginExample</span><span class="p">(</span><span class="n">BotPlugin</span><span class="p">):</span>
+    <span class="nd">@botcmd</span>
+    <span class="k">def</span> <span class="nf">longcompute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mess</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="s">&quot;Going to sleep&quot;</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="s">&quot;Waking up&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sending-a-message-to-a-specific-user-or-muc">
+<h2>Sending a message to a specific user or MUC<a class="headerlink" href="#sending-a-message-to-a-specific-user-or-muc" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes, you may wish to send a message to a specific user or a groupchat, for
+example from pollers or on webhook events. You can do this with
+<a class="reference internal" href="../../api/#errbot.botplugin.BotPlugin.send" title="errbot.botplugin.BotPlugin.send"><tt class="xref py py-func docutils literal"><span class="pre">send()</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># To send to a user</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+    <span class="s">&quot;user@host.tld/resource&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Boo! Bet you weren&#39;t expecting me, were you?&quot;</span><span class="p">,</span>
+    <span class="n">message_type</span><span class="o">=</span><span class="s">&quot;chat&quot;</span>
+<span class="p">)</span>
+
+<span class="c"># Or to send to a MUC</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+    <span class="s">&quot;conference.host.tld/room&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Boo! Bet you weren&#39;t expecting me, were you?&quot;</span><span class="p">,</span>
+    <span class="n">message_type</span><span class="o">=</span><span class="s">&quot;groupchat&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="make-err-split-the-arguments-for-you">
+<h2>Make err split the arguments for you<a class="headerlink" href="#make-err-split-the-arguments-for-you" title="Permalink to this headline">¶</a></h2>
+<p>With the <cite>split_args_with argument</cite> to <cite>botcmd</cite>, you can specify a delimiter of the
+arguments and it will give you an array of strings instead of a string:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@botcmd</span><span class="p">(</span><span class="n">split_args_with</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mess</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="c"># if you send it !action one two three</span>
+    <span class="c"># args will be [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="subcommands">
+<h2>Subcommands<a class="headerlink" href="#subcommands" title="Permalink to this headline">¶</a></h2>
+<p>If you put an _ in the name of the function, err will create for you a subcommand.
+It is useful to categorize a feature:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@botcmd</span>
+<span class="k">def</span> <span class="nf">basket_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mess</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="c"># it will respond to !basket add</span>
+
+<span class="nd">@botcmd</span>
+<span class="k">def</span> <span class="nf">basket_remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mess</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="c"># it will respond to !basket remove</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It will still respond to !basket_add and !basket_remove as well</p>
+</div>
+</div>
+<div class="section" id="version-checking">
+<h2>Version checking<a class="headerlink" href="#version-checking" title="Permalink to this headline">¶</a></h2>
+<p>You can enforce a minimal and maximal version of err if you know that your plugin won&#8217;t be compatible outside the range.
+You just have to define min_err_version and/or max_err_version as a property or field:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">errbot</span> <span class="kn">import</span> <span class="n">BotPlugin</span>
+
+<span class="k">class</span> <span class="nc">PluginExample</span><span class="p">(</span><span class="n">BotPlugin</span><span class="p">):</span>
+    <span class="n">min_err_version</span> <span class="o">=</span> <span class="s">&#39;1.2.2&#39;</span>
+    <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The version is inclusive.
+It <strong>must</strong> be defined as a string with 3 numbers dotted like &#8216;1.3.0&#8217;</p>
+</div>
+</div>
+<div class="section" id="allow-the-admin-to-configure-your-plugin-from-the-chat">
+<h2>Allow the admin to configure your plugin from the chat<a class="headerlink" href="#allow-the-admin-to-configure-your-plugin-from-the-chat" title="Permalink to this headline">¶</a></h2>
+<p>Err can keep a simple python object for the configuration of your plugin.
+I avoids asking for the admin to edit <em>config.py</em>, restart the bot...</p>
+<p>In order to enable this feature, you need to give a configuration template
+(ie. a config example) by overriding the get_configuration_template method,
+for example a plugin requesting a dictionary with 2 entries in there:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">errbot</span> <span class="kn">import</span> <span class="n">BotPlugin</span>
+
+<span class="k">class</span> <span class="nc">PluginExample</span><span class="p">(</span><span class="n">BotPlugin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_configuration_template</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;ID_TOKEN&#39;</span><span class="p">:</span> <span class="s">&#39;00112233445566778899aabbccddeeff&#39;</span><span class="p">,</span>
+                <span class="s">&#39;USERNAME&#39;</span><span class="p">:</span><span class="s">&#39;changeme&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Then from the admin you will be able to request the default template with <cite>!config PluginExample</cite>.
+Then it will instruct you to do a
+<cite>!config PluginExample {&#8216;ID_TOKEN&#8217; : &#8216;00112233445566778899aabbccddeeff&#8217;, &#8216;USERNAME&#8217;:&#8217;changeme&#8217;}</cite>
+with the real values in there.</p>
+<p>You will be able to recall the config that is set by issuing <cite>!config PluginExample</cite> again.</p>
+<p>From within your code, your config will be in <cite>self.config</cite>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@botcmd</span>
+<span class="k">def</span> <span class="nf">mycommand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mess</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="c"># oh I need my TOKEN !</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;ID_TOKEN&#39;</span><span class="p">]</span> <span class="c"># &lt;- Note: this is already a real</span>
+                                    <span class="c">#    python dict here</span>
+</pre></div>
+</div>
+<p>Now the framework will do by default a strict check on structure and types or the config:
+by default it will do only a BASIC check. You need to override it if you want to do more complex checks.
+it will be called before the configure callback. Note if the config_template is None, it will never be called</p>
+<p>It means recursively:
+1. in case of a dictionary, it will check if all the entries and from the same type
+are there and not more
+2. in case of an array or tuple, it will assume array members of the same type of
+first element of the template (no mix typed is supported)</p>
+<p>If you need a more complex validation you need to override check_configuration:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">check_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
+    <span class="c"># ... and here check the configuration received through the</span>
+    <span class="c"># `configuration` parameter.</span>
+    <span class="c"># If you encounter a validation error you should throw a</span>
+    <span class="c"># `errbot.util.ValidationException`.</span>
+</pre></div>
+</div>
+<p>But be careful, you might want to be more defensive towards the user input to be sure the plugin will run with it.
+For that, override the method configure.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If you have no configuration set yet, it will pass you None as parameter. Be
+mindful of this situation.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Don&#8217;t forget to call super() otherwise the framework will not store it.</p>
+</div>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">errbot</span> <span class="kn">import</span> <span class="n">BotPlugin</span>
+
+<span class="k">class</span> <span class="nc">PluginExample</span><span class="p">(</span><span class="n">BotPlugin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">configure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">configuration</span><span class="p">:</span> <span class="c"># if it is not configured ignore</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">dict</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Wrong configuration type&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">configuration</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&#39;ID_TOKEN&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">configuration</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&#39;USERNAME&#39;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Wrong configuration type, it should contain ID_TOKEN and USERNAME&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;What else did you try to insert in my config ?&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PluginExample</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="implementing-a-callback-to-listen-to-every-message-in-the-chatroom">
+<h2>Implementing a callback to listen to every message in the chatroom<a class="headerlink" href="#implementing-a-callback-to-listen-to-every-message-in-the-chatroom" title="Permalink to this headline">¶</a></h2>
+<p>You can add a specific callback that will be called on any message sent on the chatroom.
+It is useful to react at specific keywords even the the bot is not called explicitely with the ! commands:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">errbot</span> <span class="kn">import</span> <span class="n">BotPlugin</span>
+
+<span class="k">class</span> <span class="nc">PluginExample</span><span class="p">(</span><span class="n">BotPlugin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">callback_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">mess</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">mess</span><span class="o">.</span><span class="n">getBody</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;cookie&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+                <span class="n">mess</span><span class="o">.</span><span class="n">getFrom</span><span class="p">(),</span>
+                <span class="s">&quot;What what somebody said cookie!?&quot;</span><span class="p">,</span>
+                <span class="n">message_type</span><span class="o">=</span><span class="n">mess</span><span class="o">.</span><span class="n">getType</span><span class="p">()</span>
+            <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="make-the-bot-poll-for-a-specific-function">
+<h2>Make the bot poll for a specific function<a class="headerlink" href="#make-the-bot-poll-for-a-specific-function" title="Permalink to this headline">¶</a></h2>
+<p>Simply register your polling function at activation time:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">errbot</span> <span class="kn">import</span> <span class="n">BotPlugin</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="k">class</span> <span class="nc">PluginExample</span><span class="p">(</span><span class="n">BotPlugin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">my_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;I am called every minute&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">activate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PluginExample</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_poller</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_callback</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is the simplest case. See Botplugin for added parameters, starting several pollers, stopping pollers etc ...</p>
+</div>
+<div class="section" id="specify-the-python-compatibility-of-a-plugin">
+<h2>Specify the python compatibility of a plugin<a class="headerlink" href="#specify-the-python-compatibility-of-a-plugin" title="Permalink to this headline">¶</a></h2>
+<p>Since v2.0.0 Err is Python 3 compatible so you need to be able to specify on which
+version of python your plugin can run for forward and backward compatibility.</p>
+<p>In your .plug file you need to add a section Python with the entry Version in it
+like this:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span class="k">[Core]</span>
+<span class="na">Name</span> <span class="o">=</span> <span class="s">HelloWorld</span>
+<span class="na">Module</span> <span class="o">=</span> <span class="s">helloWorld</span>
+
+<span class="k">[Documentation]</span>
+<span class="na">Description</span> <span class="o">=</span> <span class="s">let&#39;s say hello !</span>
+
+<span class="k">[Python]</span>
+<span class="na">Version</span> <span class="o">=</span> <span class="s">2</span>
+</pre></div>
+</div>
+<p>The value of Version can be:</p>
+<ul class="simple">
+<li><strong>2</strong> for Python 2 only plugin</li>
+<li><strong>2+</strong> for Python 2 and 3 plugin</li>
+<li><strong>3</strong> for Python 3 plugin</li>
+</ul>
+<p>It is highly recommended to make your plugin compatible with both 2 and 3 for the
+time being. The library <a class="reference external" href="https://pypi.python.org/pypi/six/">six</a> may help you
+do that.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <a class="logo" href="../../" title="Back to home page">
+        <img class="logo" src="../../_static/err_speech.png" width="220" height="135" alt="Logo of Err" />
+    </a>
+  <h3><a href="../../">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Plugin development</a><ul>
+<li><a class="reference internal" href="#tips-before-you-get-started">Tips before you get started</a><ul>
+<li><a class="reference internal" href="#add-a-development-directory-in-the-plugin-searchpath">Add a development directory in the plugin searchpath</a></li>
+<li><a class="reference internal" href="#start-the-bot-in-test-mode-optional-but-it-helps">Start the bot in test mode (optional but it helps)</a></li>
+<li><a class="reference internal" href="#use-our-plugin-skeleton">Use our plugin skeleton</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#writing-a-simple-plugin">Writing a simple plugin</a></li>
+<li><a class="reference internal" href="#returning-multiple-responses">Returning multiple responses</a></li>
+<li><a class="reference internal" href="#sending-a-message-to-a-specific-user-or-muc">Sending a message to a specific user or MUC</a></li>
+<li><a class="reference internal" href="#make-err-split-the-arguments-for-you">Make err split the arguments for you</a></li>
+<li><a class="reference internal" href="#subcommands">Subcommands</a></li>
+<li><a class="reference internal" href="#version-checking">Version checking</a></li>
+<li><a class="reference internal" href="#allow-the-admin-to-configure-your-plugin-from-the-chat">Allow the admin to configure your plugin from the chat</a></li>
+<li><a class="reference internal" href="#implementing-a-callback-to-listen-to-every-message-in-the-chatroom">Implementing a callback to listen to every message in the chatroom</a></li>
+<li><a class="reference internal" href="#make-the-bot-poll-for-a-specific-function">Make the bot poll for a specific function</a></li>
+<li><a class="reference internal" href="#specify-the-python-compatibility-of-a-plugin">Specify the python compatibility of a plugin</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../">Homepage</a></li>
+    <li><a href="../../genindex/">Index</a></li>
+  <li><a href="../../py-modindex/">Module index</a></li>
+          <li>Previous: <a href="../interaction/" title="previous chapter">Interacting with the Bot</a></li>
+          <li>Next: <a href="../sentry/" title="next chapter">Logging to Sentry</a></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/user_guide/plugin_development.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search/" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <script>
+    $(document).ready(function() {
+        $('.fancybox').fancybox({
+            padding : 0,
+            openEffect  : 'elastic'
+        });
+    });
+  </script>
+ <div class="relbar2">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../sentry/" title="Logging to Sentry"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../interaction/" title="Interacting with the Bot"
+             >previous</a> |</li>
+        <li><a href="../../">Err 2.0.0-rc2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+ </div>
+  <div class="footer">
+    &copy; Copyright 2013, Guillaume Binet, Tali Davidovich Petrover and Nick Groenen.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

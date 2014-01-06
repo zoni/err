@@ -1,0 +1,193 @@
+
+<!doctype html>
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>errbot.storage &mdash; Err 2.0.0-rc2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/err.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.0-rc2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Err 2.0.0-rc2 documentation" href="../../../" />
+    <link rel="up" title="errbot" href="../" />
+  <link rel="icon" type="image/png" href="../../../_static/err.png" />
+  <link rel="apple-touch-icon" href="../../../_static/err.png" />
+  <link rel="stylesheet" href="../../../_static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="../../../_static/fancybox/jquery.fancybox.pack.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32534172-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../">Err 2.0.0-rc2 documentation</a> &raquo;</li>
+          <li><a href="../../" >Module code</a> &raquo;</li>
+          <li><a href="../" accesskey="U">errbot</a> &raquo;</li> 
+      </ul>
+    </div>
+    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for errbot.storage</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">MutableMapping</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">shelve</span>
+
+<span class="kn">from</span> <span class="nn">errbot</span> <span class="kn">import</span> <span class="n">PY2</span>
+
+
+<div class="viewcode-block" id="StoreMixin"><a class="viewcode-back" href="../../../api/#errbot.storage.StoreMixin">[docs]</a><span class="k">class</span> <span class="nc">StoreMixin</span><span class="p">(</span><span class="n">MutableMapping</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">     This class handle the basic needs of bot plugins and core like loading, unloading and creating a storage</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="StoreMixin.open_storage"><a class="viewcode-back" href="../../../api/#errbot.storage.StoreMixin.open_storage">[docs]</a>    <span class="k">def</span> <span class="nf">open_storage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Try to open db file </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shelf</span> <span class="o">=</span> <span class="n">shelve</span><span class="o">.</span><span class="n">DbfilenameShelf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Opened shelf of </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="StoreMixin.close_storage"><a class="viewcode-back" href="../../../api/#errbot.storage.StoreMixin.close_storage">[docs]</a>    <span class="k">def</span> <span class="nf">close_storage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shelf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Closed shelf of </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+
+    <span class="c"># those are the minimal things to behave like a dictionary with the UserDict.DictMixin</span></div>
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shelf</span><span class="o">.</span><span class="n">__getitem__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shelf</span><span class="o">.</span><span class="n">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shelf</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">answer</span>
+
+    <span class="k">def</span> <span class="nf">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shelf</span><span class="o">.</span><span class="n">__delitem__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shelf</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">answer</span>
+
+<div class="viewcode-block" id="StoreMixin.keys"><a class="viewcode-back" href="../../../api/#errbot.storage.StoreMixin.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shelf</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">PY2</span><span class="p">:</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">keys</span>
+</div>
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shelf</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">shelf</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">i</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <a class="logo" href="../../../" title="Back to home page">
+        <img class="logo" src="../../../_static/err_speech.png" width="220" height="135" alt="Logo of Err" />
+    </a><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../">Homepage</a></li>
+    <li><a href="../../../genindex/">Index</a></li>
+  <li><a href="../../../py-modindex/">Module index</a></li>
+      <li>
+          <a href="../../">Module code</a>
+          <ul>
+      <li>
+          <a href="../">errbot</a>
+          <ul>
+          </ul>
+      </li>
+          </ul>
+      </li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search/" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <script>
+    $(document).ready(function() {
+        $('.fancybox').fancybox({
+            padding : 0,
+            openEffect  : 'elastic'
+        });
+    });
+  </script>
+ <div class="relbar2">
+    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex/" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../">Err 2.0.0-rc2 documentation</a> &raquo;</li>
+          <li><a href="../../" >Module code</a> &raquo;</li>
+          <li><a href="../" >errbot</a> &raquo;</li> 
+      </ul>
+    </div>
+ </div>
+  <div class="footer">
+    &copy; Copyright 2013, Guillaume Binet, Tali Davidovich Petrover and Nick Groenen.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>
