@@ -1,67 +1,86 @@
-backends Package
-================
+errbot.backends package
+=======================
 
-:mod:`base` Module
-------------------
+Submodules
+----------
+
+errbot.backends.base module
+---------------------------
 
 .. automodule:: errbot.backends.base
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`graphic` Module
----------------------
+errbot.backends.campfire module
+-------------------------------
+
+.. automodule:: errbot.backends.campfire
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+errbot.backends.graphic module
+------------------------------
 
 .. automodule:: errbot.backends.graphic
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`hipchat` Module
----------------------
+errbot.backends.hipchat module
+------------------------------
 
 .. automodule:: errbot.backends.hipchat
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`irc` Module
------------------
+errbot.backends.irc module
+--------------------------
 
 .. automodule:: errbot.backends.irc
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`null` Module
-------------------
+errbot.backends.null module
+---------------------------
 
 .. automodule:: errbot.backends.null
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`test` Module
-------------------
+errbot.backends.test module
+---------------------------
 
 .. automodule:: errbot.backends.test
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`text` Module
-------------------
+errbot.backends.text module
+---------------------------
 
 .. automodule:: errbot.backends.text
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`xmpp` Module
-------------------
+errbot.backends.xmpp module
+---------------------------
 
 .. automodule:: errbot.backends.xmpp
     :members:
     :undoc-members:
     :show-inheritance:
 
+
+Module contents
+---------------
+
+.. automodule:: errbot.backends
+    :members:
+    :undoc-members:
+    :show-inheritance:

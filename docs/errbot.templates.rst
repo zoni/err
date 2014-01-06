@@ -1,11 +1,10 @@
-templates Package
-=================
+errbot.templates package
+========================
 
-:mod:`templates` Package
-------------------------
+Module contents
+---------------
 
 .. automodule:: errbot.templates
     :members:
     :undoc-members:
     :show-inheritance:
-
