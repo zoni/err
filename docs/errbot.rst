@@ -1,101 +1,5 @@
-errbot Package
+errbot package
 ==============
-
-:mod:`errbot` Package
----------------------
-
-.. automodule:: errbot.__init__
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`botplugin` Module
------------------------
-
-.. automodule:: errbot.botplugin
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`errBot` Module
---------------------
-
-.. automodule:: errbot.errBot
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`holder` Module
---------------------
-
-.. automodule:: errbot.holder
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`main` Module
-------------------
-
-.. automodule:: errbot.main
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`pid` Module
------------------
-
-.. automodule:: errbot.pid
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`plugin_manager` Module
-----------------------------
-
-.. automodule:: errbot.plugin_manager
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`repos` Module
--------------------
-
-.. automodule:: errbot.repos
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`storage` Module
----------------------
-
-.. automodule:: errbot.storage
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`templating` Module
-------------------------
-
-.. automodule:: errbot.templating
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`utils` Module
--------------------
-
-.. automodule:: errbot.utils
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`version` Module
----------------------
-
-.. automodule:: errbot.version
-    :members:
-    :undoc-members:
-    :show-inheritance:
 
 Subpackages
 -----------
@@ -107,3 +11,110 @@ Subpackages
     errbot.bundled
     errbot.templates
 
+Submodules
+----------
+
+errbot.botplugin module
+-----------------------
+
+.. automodule:: errbot.botplugin
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+errbot.config-template module
+-----------------------------
+
+.. automodule:: errbot.config-template
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+errbot.errBot module
+--------------------
+
+.. automodule:: errbot.errBot
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+errbot.holder module
+--------------------
+
+.. automodule:: errbot.holder
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+errbot.main module
+------------------
+
+.. automodule:: errbot.main
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+errbot.pid module
+-----------------
+
+.. automodule:: errbot.pid
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+errbot.plugin_manager module
+----------------------------
+
+.. automodule:: errbot.plugin_manager
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+errbot.repos module
+-------------------
+
+.. automodule:: errbot.repos
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+errbot.storage module
+---------------------
+
+.. automodule:: errbot.storage
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+errbot.templating module
+------------------------
+
+.. automodule:: errbot.templating
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+errbot.utils module
+-------------------
+
+.. automodule:: errbot.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+errbot.version module
+---------------------
+
+.. automodule:: errbot.version
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: errbot
+    :members:
+    :undoc-members:
+    :show-inheritance:

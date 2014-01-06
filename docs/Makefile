@@ -52,12 +52,6 @@ clean:
 
 apidoc:
 	$(SPHINXAPIDOC) -f -o . ../errbot
-	# config-template is a config file, not a Python module which should be documented,
-	# so we patch this one out to avoid Sphinx raising warnings about being unable to
-	# import it.
-	patch --unified --input errbot.rst.patch
-	# pyfire fails to import on Python 3, so we patch out the campfire backend as well.
-	patch --unified --input errbot.backends.rst.patch
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
