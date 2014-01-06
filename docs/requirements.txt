@@ -1,5 +1,5 @@
 -r ../requirements.txt
-sphinx
+sphinx>=1.2
 sleekxmpp
 irc
 pyfire
