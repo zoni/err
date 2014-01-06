@@ -7,6 +7,7 @@ SPHINXBUILD   = sphinx-build
 SPHINXAPIDOC  = sphinx-apidoc
 PAPER         =
 BUILDDIR      = _build
+GITURL        = git@github.com:zoni/err.git
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
@@ -49,6 +50,16 @@ help:
 
 clean:
 	rm -rf $(BUILDDIR)/*
+
+gh-pages:
+	$(SPHINXAPIDOC) -f -o . ../errbot
+	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
+	test -e repo && (cd repo && git pull) || git clone $(GITURL) repo
+	cd repo && git checkout gh-pages
+	rm -r repo/*
+	cp -r $(BUILDDIR)/dirhtml/* repo/
+	touch repo/.nojekyll
+	cd repo && git add --all . && git commit --message "Sphinx autobuild" && git push
 
 apidoc:
 	$(SPHINXAPIDOC) -f -o . ../errbot
