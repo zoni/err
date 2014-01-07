@@ -8,7 +8,7 @@ SPHINXAPIDOC  = sphinx-apidoc
 PAPER         =
 BUILDDIR      = _build
 PAGESURL        = git@github.com:gbin/err.git
-PAGESDIR        = _repo
+PAGESDIR        = _gh-pages
 EXTRADIR        = _extra
 
 # User-friendly check for sphinx-build
@@ -23,7 +23,7 @@ ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 # the i18n builder cannot share the environment and doctrees with the others
 I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
-.PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext
+.PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext gh-pages apidoc
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -53,9 +53,7 @@ help:
 clean:
 	rm -rf $(BUILDDIR)/*
 
-gh-pages:
-	$(SPHINXAPIDOC) -f -o . ../errbot
-	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
+gh-pages: apidoc dirhtml
 	test -e $(PAGESDIR) && (cd $(PAGESDIR) && git pull) || git clone $(PAGESURL) $(PAGESDIR)
 	cd $(PAGESDIR) && git checkout gh-pages
 	rm -r $(PAGESDIR)/*
@@ -66,14 +64,14 @@ gh-pages:
 	@echo "GitHub pages are built and ready, just waiting to be pushed from the $(PAGESDIR) directory"
 
 apidoc:
-	$(SPHINXAPIDOC) -f -o . ../errbot
+	$(SPHINXAPIDOC) --separate -f -o . ../errbot
 
-html:
+html: apidoc
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
-dirhtml:
+dirhtml: apidoc
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/dirhtml."

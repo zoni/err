@@ -92,8 +92,13 @@ User guide
   user_guide/plugin_development
   user_guide/sentry
 
-.. _`Google plus community`: https://plus.google.com/b/101905029512356212669/communities/117050256560830486288
-.. _`GitHub page`: http://github.com/gbin/err/
+API documentation
+-----------------
+
+.. toctree::
+  :maxdepth: 3
+
+  errbot
 
 License
 -------
@@ -101,4 +106,5 @@ License
 Err is free software, available under the GPL-3 license. Please refer to the
 :download:`full license text <gpl-3.0.txt>` for more details.
 
-
+.. _`Google plus community`: https://plus.google.com/b/101905029512356212669/communities/117050256560830486288
+.. _`GitHub page`: http://github.com/gbin/err/

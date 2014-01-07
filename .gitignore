@@ -13,4 +13,6 @@ config_hipchat.py
 config_irc.py
 config_xmpp.py
 /docs/_build
-/docs/_repo
+/docs/_gh-pages
+/docs/errbot.rst
+/docs/errbot.*.rst
