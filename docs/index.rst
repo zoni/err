@@ -100,6 +100,11 @@ API documentation
 
   errbot
 
+Release history
+---------------
+
+Please see :doc:`CHANGES.rst <changes>` for the list of releases and associated changes.
+
 License
 -------
 
