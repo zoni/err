@@ -9,6 +9,7 @@ PAPER         =
 BUILDDIR      = _build
 PAGESURL        = git@github.com:gbin/err.git
 PAGESDIR        = _repo
+EXTRADIR        = _extra
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
@@ -59,7 +60,7 @@ gh-pages:
 	cd $(PAGESDIR) && git checkout gh-pages
 	rm -r $(PAGESDIR)/*
 	cp -r $(BUILDDIR)/dirhtml/* $(PAGESDIR)/
-	touch $(PAGESDIR)/.nojekyll
+	cp -r $(EXTRADIR)/* $(PAGESDIR)/
 	cd $(PAGESDIR) && git add --all . && git commit --message "Sphinx autobuild"
 	@echo
 	@echo "GitHub pages are built and ready, just waiting to be pushed from the $(PAGESDIR) directory"
