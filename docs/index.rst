@@ -90,6 +90,7 @@ User guide
   user_guide/setup
   user_guide/interaction
   user_guide/plugin_development
+  user_guide/plugin_testing
   user_guide/sentry
 
 API documentation
