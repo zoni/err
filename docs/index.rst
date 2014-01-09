@@ -104,7 +104,10 @@ API documentation
 Release history
 ---------------
 
-Please see :doc:`CHANGES.rst <changes>` for the list of releases and associated changes.
+.. toctree::
+  :maxdepth: 2
+
+  changes
 
 License
 -------
