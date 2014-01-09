@@ -78,8 +78,13 @@ questions, discuss anything related to Err as well as promote your own creations
 This is also the place where you will find announcements of new versions and other
 news related to the project.
 
-If you wish to get involved with development of Err itself, have a bug to report or
-wish to request a new feature, please go to the `GitHub page`_ instead.
+Getting involved
+----------------
+
+.. toctree::
+  :maxdepth: 3
+
+  contributing
 
 User guide
 ----------
