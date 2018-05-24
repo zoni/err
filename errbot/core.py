@@ -47,7 +47,6 @@ class ErrBot(Backend, StoreMixin):
     def __init__(self, bot_config):
         log.debug("ErrBot init.")
         super().__init__(bot_config)
-        self.bot_config = bot_config
         self.prefix = bot_config.BOT_PREFIX
         if bot_config.BOT_ASYNC:
             self.thread_pool = ThreadPool(bot_config.BOT_ASYNC_POOLSIZE)

@@ -393,7 +393,12 @@ class TestBot(object):
         if self.bot_thread is not None:
             raise Exception("Bot has already been started")
         self._bot = setup_bot('Test', self.logger, self.bot_config)
-        self.bot_thread = Thread(target=self.bot.serve_forever, name='TestBot main thread')
+
+        def runbot():
+            self._bot.serve_forever()
+            self._bot.shutdown()
+
+        self.bot_thread = Thread(target=runbot, name='TestBot main thread')
         self.bot_thread.setDaemon(True)
         self.bot_thread.start()
 

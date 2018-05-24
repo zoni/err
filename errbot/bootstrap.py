@@ -217,3 +217,4 @@ def bootstrap(bot_class, logger, config, restore=None):
     bot = setup_bot(bot_class, logger, config, restore)
     log.debug('Start serving commands from the %s backend' % bot.mode)
     bot.serve_forever()
+    bot.shutdown()

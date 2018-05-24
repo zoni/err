@@ -8,7 +8,7 @@ from importlib._bootstrap_external import spec_from_file_location
 
 from errbot.utils import version2tuple
 from pathlib import Path
-from typing import Tuple, List, Type
+from typing import Tuple, List, Type, Optional
 from configparser import Error as ConfigParserError
 
 VersionType = Tuple[int, int, int]
@@ -24,7 +24,7 @@ class PluginInfo:
     errbot_minversion: VersionType
     errbot_maxversion: VersionType
     dependencies: List[str]
-    location: Path = None
+    location: Optional[Path] = None
 
     @staticmethod
     def load(plugfile_path: Path) -> 'PluginInfo':

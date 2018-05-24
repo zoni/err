@@ -2,7 +2,7 @@ import io
 import logging
 import random
 import time
-from typing import Any, Mapping, BinaryIO, List, Sequence, Tuple
+from typing import Any, Mapping, BinaryIO, List, Sequence, Tuple, Optional, Dict
 from abc import ABC, abstractmethod
 from collections import deque, defaultdict
 
@@ -227,7 +227,7 @@ class Message(object):
                  delayed: bool = False,
                  partial: bool = False,
                  extras: Mapping = None,
-                 flow=None):
+                 flow=None) -> None:
         """
         :param body:
             The markdown body of the message.
@@ -260,7 +260,7 @@ class Message(object):
         return Message(self._body, self._from, self._to, self._parent, self._delayed, self.extras)
 
     @property
-    def to(self) -> Identifier:
+    def to(self) -> Optional[Identifier]:
         """
         Get the recipient of the message.
 
@@ -280,7 +280,7 @@ class Message(object):
         self._to = to
 
     @property
-    def frm(self) -> Identifier:
+    def frm(self) -> Optional[Identifier]:
         """
         Get the sender of the message.
 
@@ -386,7 +386,7 @@ class Card(Message):
                  image: str = None,
                  thumbnail: str = None,
                  color: str = None,
-                 fields: Tuple[Tuple[str, str]] = ()):
+                 fields: Tuple[Tuple[str, str], ...] = ()) -> None:
         """
         Creates a Card.
         :param body: main text of the card in markdown.
@@ -462,7 +462,7 @@ class Presence(object):
     def __init__(self,
                  identifier: Identifier,
                  status: str = None,
-                 message: str = None):
+                 message: str = None) -> None:
         if identifier is None:
             raise ValueError('Presence: identifiers is None')
         if status is None and message is None:
@@ -480,7 +480,7 @@ class Presence(object):
         return self._identifier
 
     @property
-    def status(self) -> str:
+    def status(self) -> Optional[str]:
         """ Returns the status of the presence change.
             It can be one of the constants ONLINE, OFFLINE, AWAY, DND, but
             can also be custom statuses depending on backends.
@@ -489,7 +489,7 @@ class Presence(object):
         return self._status
 
     @property
-    def message(self) -> str:
+    def message(self) -> Optional[str]:
         """ Returns a human readable message associated with the status if any.
             like : "BRB, washing the dishes"
             It can be None if it is only a general status update (see get_status)
@@ -530,10 +530,10 @@ class Stream(io.BufferedReader):
 
     def __init__(self,
                  identifier: Identifier,
-                 fsource: BinaryIO,
+                 fsource: io.RawIOBase,
                  name: str = None,
                  size: int = None,
-                 stream_type: str = None):
+                 stream_type: str = None) -> None:
         super().__init__(fsource)
         self._identifier = identifier
         self._name = name
@@ -552,7 +552,7 @@ class Stream(io.BufferedReader):
         return self._identifier
 
     @property
-    def name(self) -> str:
+    def name(self) -> Optional[str]:
         """
             The name of the stream/file if it has one or None otherwise.
             !! Be carefull of injections if you are using this name directly as a filename.
@@ -560,7 +560,7 @@ class Stream(io.BufferedReader):
         return self._name
 
     @property
-    def size(self) -> int:
+    def size(self) -> Optional[int]:
         """
             The expected size in bytes of the stream if it is known or None.
         """
@@ -574,7 +574,7 @@ class Stream(io.BufferedReader):
         return self._transfered
 
     @property
-    def stream_type(self) -> str:
+    def stream_type(self) -> Optional[str]:
         """
             The mimetype of the stream if it is known or None.
         """
@@ -618,7 +618,7 @@ class Stream(io.BufferedReader):
             raise ValueError("Invalid state, the stream is not in progress.")
         self._status = STREAM_SUCCESSFULLY_TRANSFERED
 
-    def clone(self, new_fsource: BinaryIO) -> 'Stream':
+    def clone(self, new_fsource: io.RawIOBase) -> 'Stream':
         """
             Creates a clone and with an alternative stream
         """
@@ -635,15 +635,19 @@ class Backend(ABC):
     you to implement the missing parts.
     """
 
-    cmd_history = defaultdict(lambda: deque(maxlen=10))  # this will be a per user history
+    cmd_history: Dict[str, deque] = defaultdict(lambda: deque(maxlen=10))  # this will be a per user history
 
     MSG_ERROR_OCCURRED = 'Sorry for your inconvenience. ' \
                          'An unexpected error occurred.'
 
-    def __init__(self, _):
+    def __init__(self, bot_config):
         """ Those arguments will be directly those put in BOT_IDENTITY
         """
         log.debug("Backend init.")
+
+        self.bot_config = bot_config
+        self.bot_identifier = None  # This should be set before connection by the backend implementation.
+
         self._reconnection_count = 0  # Increments with each failed (re)connection
         self._reconnection_delay = 1  # Amount of seconds the bot will sleep on the
         #                                     # next reconnection attempt
@@ -715,7 +719,6 @@ class Backend(ABC):
                 break
 
         log.info("Trigger shutdown")
-        self.shutdown()
 
     def _delay_reconnect(self):
         """Delay next reconnection attempt until a suitable back-off time has passed"""
@@ -761,9 +764,9 @@ class Backend(ABC):
         # Default implementation (XMPP-like check using an extra config).
         # Most of the backends should have a better way to determine this.
         return (msg.is_direct and msg.frm == self.bot_identifier) or \
-               (msg.is_group and msg.frm.nick == self.bot_config.CHATROOM_FN)
+               (msg.is_group and msg.frm.nick and msg.frm.nick == self.bot_config.CHATROOM_FN)
 
-    def serve_once(self) -> None:
+    def serve_once(self) -> bool:
         """
         Connect the back-end to the server and serve a connection once
         (meaning until disconnected for any reason).
